@@ -3,337 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TUCO Logistics - Supply Chain Excellence</title>
+    <title>TUCO - 4PL Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #000000;
-            --secondary: #333333;
-            --text: #000000;
-            --text-light: #666666;
-            --background: #ffffff;
-            --light-grey: #f5f5f5;
-            --border: #e0e0e0;
+        body {
+            font-family: "Century Gothic", CenturyGothic, sans-serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        .accessibility {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
-        /* Announcement Banner */
-        .announcement-banner {
-            background: var(--primary);
-            padding: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .banner-left-text {
-            color: var(--background);
-            margin-right: 20px;
-            font-size: 14px;
-        }
-
-        .banner-right-text {
-            color: var(--background);
-            font-size: 14px;
-            text-decoration: underline;
-        }
-
-        /* Header & Navigation */
-        .flex-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: var(--background);
-            position: relative;
-            z-index: 100;
-        }
-
-        .logo {
-            font-weight: 600;
-            font-size: 24px;
-            text-decoration: none;
-            color: var(--text);
-            border: 2px solid var(--text);
-            padding: 10px 20px;
-        }
-
-        nav {
-            display: flex;
-            gap: 40px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text);
-            font-size: 16px;
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--text);
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
         .hero {
-            padding: 120px 40px;
-            background: var(--background);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .curve {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            pointer-events: none;
-        }
-
-        .hero h1 {
-            font-size: 64px;
-            line-height: 1.2;
-            max-width: 900px;
-            margin-bottom: 40px;
-        }
-
-        .special-link {
-            color: var(--text);
-            text-decoration: none;
-            position: relative;
-            display: inline-block;
-        }
-
-        .special-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--text);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-        }
-
-        .special-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        /* About Section */
-        .about-intro {
-            padding: 120px 40px;
-            background: var(--light-grey);
-        }
-
-        .section1, .section2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            margin-bottom: 120px;
-        }
-
-        .eyebrow {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 20px;
-        }
-
-        .images {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .images img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
-        /* Work Carousel */
-        .work-carousel {
-            padding: 120px 40px;
-            background: var(--primary);
-            color: var(--background);
-            position: relative;
-        }
-
-        .carousel {
-            margin-top: 60px;
-            position: relative;
-        }
-
-        .carousel-item {
-            padding: 0 20px;
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        /* Stats Section */
-        .metrics {
-            padding: 80px 40px;
-            background: var(--primary);
-            color: var(--background);
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .metric-item {
-            text-align: center;
-        }
-
-        .metric-value {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .hero h1 {
-                font-size: 48px;
-            }
-            
-            .section1, .section2 {
-                grid-template-columns: 1fr;
-            }
-
-            .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
         }
     </style>
 </head>
 <body>
-    <a href="#" class="announcement-banner">
-        <span class="banner-left-text">Take a deep dive into TUCO's supply chain analysis process</span>
-        <span class="banner-right-text">Check it out</span>
-    </a>
-
-    <header class="flex-container">
-        <a href="#" class="logo">T U C O</a>
-        <nav>
-            <a href="#">Work</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Perspectives</a>
-            <a href="#">Contact</a>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>we love data-driven <a href="#" class="special-link">analysis</a>, thoughtfully crafted <a href="#" class="special-link">solutions</a>, and building custom <a href="#" class="special-link">logistics</a> frameworks</h1>
-            </div>
-            <svg class="curve" width="1440" height="141" viewBox="0 0 1440 141" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0,141 L818,141 L1440,141 C1439.93164,95.2295932 1439.93164,53.2295932 1440,15 C1269.5705,5.30471988 1053.19572,0 818,0 C479.163026,0 180.000584,11.614393 0,30 C0,29.9521253 0,66.9521253 0,141 Z" fill="#000"/>
-            </svg>
-        </section>
-
-        <section class="about-intro">
-            <div class="container">
-                <div class="section1">
-                    <div class="images">
-                        <img src="/api/placeholder/740/1338" alt="Logistics operations">
-                        <img src="/api/placeholder/512/512" alt="Supply chain technology">
-                    </div>
-                    <div>
-                        <h2 class="eyebrow">we craft experiences</h2>
-                        <p>TUCO is a supply chain solutions provider based in Australia. We specialize in creating seamless logistics experiences, implementing data-driven solutions, and developing custom supply chain frameworks.</p>
-                    </div>
-                </div>
-
-                <div class="section2">
-                    <div class="images">
-                        <img src="/api/placeholder/512/512" alt="Data analytics">
-                        <img src="/api/placeholder/1132/836" alt="Team collaboration">
-                    </div>
-                    <div>
-                        <h2 class="eyebrow">small by design</h2>
-                        <p>Our approach is highly collaborative and analytical. We care deeply about our clients, and partner with companies who believe in data-driven decision making and innovative supply chain solutions.</p>
-                    </div>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-black">T U C O</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-black">Services</a>
+                    <a href="#" class="text-gray-600 hover:text-black">Industries</a>
+                    <a href="#" class="text-gray-600 hover:text-black">About</a>
+                    <a href="#" class="text-gray-600 hover:text-black">Contact</a>
+                    <a href="#" class="bg-black text-white px-6 py-2 rounded-full">Get Started</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <section class="metrics">
-            <div class="metrics-grid">
-                <div class="metric-item">
-                    <div class="metric-value">98%</div>
-                    <p>Client Retention Rate</p>
+    <!-- Hero -->
+    <div class="hero min-h-screen flex items-center">
+        <div class="container mx-auto px-6 text-center text-white">
+            <h1 class="text-5xl font-bold mb-8">Your Strategic 4PL Partner</h1>
+            <p class="text-xl mb-12">Transforming supply chains through analysis, solutions, technology, and partnership</p>
+            <div class="space-x-4">
+                <a href="#" class="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-gray-100">Schedule a Consultation</a>
+                <a href="#" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-black">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services -->
+    <div class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 text-black">Our Services</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                    <div class="text-4xl mb-4">📦</div>
+                    <h3 class="text-xl font-bold text-black mb-4">Supply Chain Management</h3>
+                    <p class="text-gray-600">End-to-end visibility and control</p>
                 </div>
-                <div class="metric-item">
-                    <div class="metric-value">35%</div>
-                    <p>Average Cost Savings</p>
+                <!-- Service 2 -->
+                <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold text-black mb-4">Data Analytics</h3>
+                    <p class="text-gray-600">Real-time insights and reporting</p>
                 </div>
-                <div class="metric-item">
-                    <div class="metric-value">24/7</div>
-                    <p>Support Available</p>
+                <!-- Service 3 -->
+                <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                    <div class="text-4xl mb-4">🔄</div>
+                    <h3 class="text-xl font-bold text-black mb-4">24/7 Support</h3>
+                    <p class="text-gray-600">Always here when you need us</p>
                 </div>
-                <div class="metric-item">
-                    <div class="metric-value">AU</div>
-                    <p>Nationwide Coverage</p>
+                <!-- Service 4 -->
+                <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold text-black mb-4">Partnership</h3>
+                    <p class="text-gray-600">Your dedicated logistics partner</p>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="bg-gray-50 py-20">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-black">98%</div>
+                    <div class="text-gray-600">Client Retention</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-black">35%</div>
+                    <div class="text-gray-600">Average Cost Savings</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-black">24/7</div>
+                    <div class="text-gray-600">Support Available</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-black">AU</div>
+                    <div class="text-gray-600">Nationwide Coverage</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16 text-black">Get in Touch</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 border border-gray-200 rounded-lg">
+                    <div class="text-4xl mb-4">📞</div>
+                    <h3 class="text-xl font-bold text-black">Call Us</h3>
+                    <p class="text-gray-600">1300 TUCO LOG</p>
+                </div>
+                <div class="text-center p-8 border border-gray-200 rounded-lg">
+                    <div class="text-4xl mb-4">✉️</div>
+                    <h3 class="text-xl font-bold text-black">Email Us</h3>
+                    <p class="text-gray-600">hello@tucologistics.com.au</p>
+                </div>
+                <div class="text-center p-8 border border-gray-200 rounded-lg">
+                    <div class="text-4xl mb-4">📍</div>
+                    <h3 class="text-xl font-bold text-black">Visit Us</h3>
+                    <p class="text-gray-600">Sydney, Melbourne, Brisbane</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="bg-black py-20">
+        <div class="container mx-auto px-6 text-center text-white">
+            <h2 class="text-4xl font-bold mb-8">Ready to Optimize Your Supply Chain?</h2>
+            <p class="text-xl mb-12">Let's discuss how TUCO can transform your logistics operations</p>
+            <a href="#" class="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-gray-100">Start Your Journey →</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">&copy; 2024 TUCO. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
