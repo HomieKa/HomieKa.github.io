@@ -327,6 +327,8 @@
             link.href = palette.url;
             link.className = 'card-link';
             link.textContent = 'View Colors';
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
 
             card.appendChild(header);
             card.appendChild(content);
@@ -349,6 +351,9 @@
             link.href = design.url;
             link.className = 'card-link';
             link.textContent = 'View Design';
+
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
 
             card.appendChild(header);
             card.appendChild(link);
