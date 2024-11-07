@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TUCO Design & Rebranding Palette</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <style>
+    <title>TUCO Design & Rebranding Analysis</title>
+    
+    <!-- Updated Dependencies -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types/prop-types.min.js"></script>
+    <script src="https://unpkg.com/recharts@2.1.12/umd/Recharts.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+ <style>
         * {
             margin: 0;
             padding: 0;
@@ -124,6 +132,46 @@
             gap: 1.5rem;
         }
 
+        .chart-container {
+            height: 400px;
+            padding: 1.5rem;
+        }
+
+        .summary-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #001228;
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: #001228;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-point {
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -132,10 +180,234 @@
             h1 {
                 font-size: 2rem;
             }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center text-[#001228]">TUCO Design Survey Analysis</h1>
+
+        <!-- Summary Section -->
+        <div class="summary-section mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-[#001228]">Key Findings Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3 class="summary-title">Color Palette Analysis</h3>
+                    <ul class="list-disc pl-5">
+                        <li class="summary-point">Nature Inspired was most preferred (59.1% adjusted preference)</li>
+                        <li class="summary-point">8 first-place rankings, 5 second-place rankings</li>
+                        <li class="summary-point">Best average ranking position of 2.14</li>
+                        <li class="summary-point">Combined Professional Nature showed strong performance (46.7%) despite late entry</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card">
+                    <h3 class="summary-title">Layout Preferences</h3>
+                    <ul class="list-disc pl-5">
+                        <li class="summary-point">Design 7 was most popular (27.3% of votes)</li>
+                        <li class="summary-point">Designs 1, 2, and 4 tied for second (18.2% each)</li>
+                        <li class="summary-point">Strong preference for clean, modern layouts</li>
+                        <li class="summary-point">Consistent support for designs with clear navigation</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card">
+                    <h3 class="summary-title">Key Recommendations</h3>
+                    <ul class="list-disc pl-5">
+                        <li class="summary-point">Implement nature-inspired color scheme with professional elements</li>
+                        <li class="summary-point">Focus on clean, modern design principles</li>
+                        <li class="summary-point">Include prominent tracking features</li>
+                        <li class="summary-point">Emphasize mission statement in design</li>
+                        <li class="summary-point">Add easily accessible sales rep contact functionality</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-root"></div>
+    </div>
+
+    <script type="text/babel">
+        // Check if Recharts is loaded properly
+        console.log('Recharts:', Recharts);
+        
+        // Destructure Recharts components
+        const {
+            BarChart,
+            Bar,
+            XAxis,
+            YAxis,
+            Tooltip,
+            Cell,
+            ResponsiveContainer,
+            Legend
+        } = Recharts;
+
+        // Simple test component to verify React is working
+        function TestComponent() {
+            return (
+                <div style={{ padding: '20px', backgroundColor: '#f0f0f0', marginBottom: '20px' }}>
+                </div>
+            );
+        }
+
+        // Your data
+        const colorRankingData = [
+            { name: 'Nature Inspired', firstPlace: 8, secondPlace: 5, thirdPlace: 3, averageRank: 2.14, totalScore: 98 },
+            { name: 'Combined Pro Nature', firstPlace: 6, secondPlace: 4, thirdPlace: 3, averageRank: 2.95, totalScore: 82 },
+            { name: 'Professional Hybrid', firstPlace: 3, secondPlace: 4, thirdPlace: 3, averageRank: 3.45, totalScore: 71 },
+            { name: 'Sunset Warmth', firstPlace: 2, secondPlace: 3, thirdPlace: 3, averageRank: 3.68, totalScore: 65 },
+            { name: 'Professional Cool', firstPlace: 1, secondPlace: 3, thirdPlace: 3, averageRank: 3.91, totalScore: 58 },
+            { name: 'Professional Modern', firstPlace: 1, secondPlace: 1, thirdPlace: 1, averageRank: 4.87, totalScore: 42 }
+        ];
+
+        const layoutPreferencesData = [
+            { name: 'Design 7', votes: 6, percentage: 27.3 },
+            { name: 'Design 2', votes: 4, percentage: 18.2 },
+            { name: 'Design 1', votes: 4, percentage: 18.2 },
+            { name: 'Design 4', votes: 4, percentage: 18.2 },
+            { name: 'Design 5', votes: 3, percentage: 13.6 },
+            { name: 'Design 8', votes: 3, percentage: 13.6 },
+            { name: 'Design 3', votes: 2, percentage: 9.1 },
+            { name: 'Design 6', votes: 2, percentage: 9.1 }
+        ];
+
+        const feedbackThemesData = [
+            { theme: 'Clean/Modern Design', count: 4 },
+            { theme: 'Tracking Features', count: 2 },
+            { theme: 'Strong Mission Statement', count: 2 },
+            { theme: 'Sales Rep Contact Form', count: 1 }
+        ];
+
+        const BRAND_COLORS = {
+            navy: '#001228',
+            blue: '#abcc66',
+            teal: '#62bda5',
+            sage: '#0aa1c8',
+            lime: '#c4ce47',
+            white: '#fffffe'
+        };
+
+        function CustomTooltip({ active, payload, label }) {
+            if (!active || !payload || !payload.length) return null;
+
+            return (
+                <div style={{
+                    backgroundColor: 'white',
+                    padding: '10px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px'
+                }}>
+                    <p style={{ fontWeight: 'bold', color: '#001228' }}>{label}</p>
+                    {payload.map((entry, index) => (
+                        <p key={index} style={{ fontSize: '14px' }}>
+                            {entry.name}: {entry.value}
+                            {entry.name.includes('percentage') ? '%' : ''}
+                        </p>
+                    ))}
+                </div>
+            );
+        }
+
+        // Main Dashboard Component
+        function Dashboard() {
+            return (
+                <div>
+                    <TestComponent />
+                    
+                    {/* Color Rankings */}
+                    <div className="card">
+                        <h3 className="text-xl font-bold p-4 border-b text-[#001228]">
+                            Color Scheme Rankings
+                        </h3>
+                        <div className="chart-container">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart 
+                                    data={colorRankingData}
+                                    layout="vertical"
+                                    margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+                                >
+                                    <XAxis type="number" domain={[0, 12]} />
+                                    <YAxis type="category" dataKey="name" width={150} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Bar dataKey="firstPlace" stackId="a" fill={BRAND_COLORS.navy} name="First Place" />
+                                    <Bar dataKey="secondPlace" stackId="a" fill={BRAND_COLORS.teal} name="Second Place" />
+                                    <Bar dataKey="thirdPlace" stackId="a" fill={BRAND_COLORS.sage} name="Third Place" />
+                                    <Legend />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    {/* Layout Preferences */}
+                    <div className="card">
+                        <h3 className="text-xl font-bold p-4 border-b text-[#001228]">
+                            Website Layout Preferences
+                        </h3>
+                        <div className="chart-container">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart 
+                                    data={layoutPreferencesData}
+                                    layout="vertical"
+                                    margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+                                >
+                                    <XAxis type="number" domain={[0, 8]} />
+                                    <YAxis type="category" dataKey="name" width={100} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Bar dataKey="votes" fill={BRAND_COLORS.navy} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    {/* Feedback Themes */}
+                    <div className="card">
+                        <h3 className="text-xl font-bold p-4 border-b text-[#001228]">
+                            Key Feedback Themes
+                        </h3>
+                        <div className="chart-container">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart 
+                                    data={feedbackThemesData}
+                                    layout="vertical"
+                                    margin={{ top: 20, right: 30, left: 180, bottom: 20 }}
+                                >
+                                    <XAxis type="number" domain={[0, 5]} />
+                                    <YAxis type="category" dataKey="theme" width={170} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Bar dataKey="count" fill={BRAND_COLORS.navy} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Initialize React with error handling
+        try {
+            ReactDOM.render(
+                <Dashboard />,
+                document.getElementById('dashboard-root')
+            );
+        } catch (error) {
+            console.error('Error rendering dashboard:', error);
+            document.getElementById('dashboard-root').innerHTML = `
+                <div style="color: red; padding: 20px;">
+                    Error loading dashboard. Please check console for details.
+                </div>
+            `;
+        }
+    </script>
+
     <h1>TUCO Website Design and Color Options</h1>
     
     <div class="section">
@@ -370,5 +642,6 @@
             designContainer.appendChild(createDesignCard(design));
         });
     </script>
+
 </body>
 </html>
