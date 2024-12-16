@@ -1,250 +1,391 @@
-import React, { useState } from 'react';
-
-const ShipmentTrackingTable = () => {
-  // Predefined options for dropdowns
-  const LATE_FLAG_OPTIONS = [
-    { value: 'true', label: 'Yes' },
-    { value: 'false', label: 'No' }
-  ];
-
-  const FINAL_STATUS_OPTIONS = [
-    'Pending',
-    'Delivered',
-    'Cancelled',
-    'Returned',
-    'In Progress'
-  ];
-
-  const LATE_REASON_OPTIONS = [
-    'Weather Delay',
-    'Transportation Issues',
-    'Customs Clearance',
-    'Warehouse Backlog',
-    'Customer Unavailable',
-    'Other'
-  ];
-
-  const AUTOMATED_STATUS_OPTIONS = [
-    'In Transit',
-    'Processing',
-    'Ready for Pickup',
-    'Out for Delivery',
-    'Delayed'
-  ];
-
-  // Sample shipments data
-  const [shipments, setShipments] = useState([
-    {
-      id: 1,
-      dispatchDate: '2024-03-15',
-      eta: '2024-03-18',
-      connoteNumber: 'CN123456789',
-      reference: 'REF-987654',
-      carrier: 'FastTrack Logistics',
-      serviceType: 'Express',
-      sender: {
-        name: 'ABC Manufacturing',
-        address: '123 Industrial Park, Sydney, NSW 2000'
-      },
-      receiver: {
-        name: 'XYZ Distributors',
-        address: '456 Warehouse Lane, Melbourne, VIC 3000'
-      },
-      automatedStatus: 'In Transit',
-      lateFlag: 'true',
-      finalStatus: 'Pending',
-      lateReason: 'Weather Delay',
-      comments: [
-        { timestamp: '2024-03-16 10:30', text: 'Shipment picked up from sender' },
-        { timestamp: '2024-03-17 14:45', text: 'Delayed due to road conditions' }
-      ]
-    },
-    {
-      id: 2,
-      dispatchDate: '2024-03-16',
-      eta: '2024-03-19',
-      connoteNumber: 'CN987654321',
-      reference: 'REF-123456',
-      carrier: 'Swift Shipping',
-      serviceType: 'Standard',
-      sender: {
-        name: 'Global Imports',
-        address: '789 Trade Center, Brisbane, QLD 4000'
-      },
-      receiver: {
-        name: 'Local Retail',
-        address: '321 Main Street, Perth, WA 6000'
-      },
-      automatedStatus: 'Processing',
-      lateFlag: 'false',
-      finalStatus: 'Pending',
-      lateReason: '',
-      comments: [
-        { timestamp: '2024-03-16 09:15', text: 'Shipment booked' }
-      ]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipment Tracking Table</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
     }
-  ]);
 
-  // State for new investigation comments
-  const [newComments, setNewComments] = useState({});
-
-  // Handle updating shipment fields
-  const handleUpdateShipmentField = (shipmentId, field, value) => {
-    setShipments(prev => 
-      prev.map(shipment => 
-        shipment.id === shipmentId 
-          ? { ...shipment, [field]: value }
-          : shipment
-      )
-    );
-  };
-
-  // Handle adding a new comment
-  const handleAddComment = (shipmentId) => {
-    const newComment = newComments[shipmentId];
-    if (newComment && newComment.trim()) {
-      setShipments(prev => 
-        prev.map(shipment => 
-          shipment.id === shipmentId 
-            ? {
-                ...shipment,
-                comments: [
-                  ...shipment.comments, 
-                  {
-                    timestamp: new Date().toLocaleString('en-AU', {
-                      year: 'numeric',
-                      month: '2-digit',
-                      day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    }),
-                    text: newComment
-                  }
-                ]
-              }
-            : shipment
-        )
-      );
-
-      // Clear the new comment input
-      setNewComments(prev => ({
-        ...prev,
-        [shipmentId]: ''
-      }));
+    h1 {
+      text-align: center;
+      padding-top: 30px;
+      color: #333;
     }
-  };
 
-  // Handle new comment input change
-  const handleCommentChange = (shipmentId, value) => {
-    setNewComments(prev => ({
-      ...prev,
-      [shipmentId]: value
-    }));
-  };
+    .container {
+      width: 90%;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-  return (
-    <div className="container mx-auto p-4">
-      <table className="w-full border-collapse border border-gray-200">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2">Connote</th>
-            <th className="border p-2">Reference</th>
-            <th className="border p-2">Carrier</th>
-            <th className="border p-2">Dispatch Date</th>
-            <th className="border p-2">ETA</th>
-            <th className="border p-2">Automated Status</th>
-            <th className="border p-2">Late Flag</th>
-            <th className="border p-2">Final Status</th>
-            <th className="border p-2">Late Reason</th>
-            <th className="border p-2 w-48">Investigation Comments</th>
-            <th className="border p-2 w-48">Add Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          {shipments.map((shipment) => (
-            <tr key={shipment.id} className="hover:bg-gray-50">
-              <td className="border p-2">{shipment.connoteNumber}</td>
-              <td className="border p-2">{shipment.reference}</td>
-              <td className="border p-2">{shipment.carrier}</td>
-              <td className="border p-2">{shipment.dispatchDate}</td>
-              <td className="border p-2">{shipment.eta}</td>
-              <td className="border p-2">
-                <select 
-                  value={shipment.automatedStatus}
-                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'automatedStatus', e.target.value)}
-                  className="w-full p-1 border rounded"
-                >
-                  {AUTOMATED_STATUS_OPTIONS.map((status) => (
-                    <option key={status} value={status}>{status}</option>
-                  ))}
-                </select>
-              </td>
-              <td className="border p-2">
-                <select 
-                  value={shipment.lateFlag}
-                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'lateFlag', e.target.value)}
-                  className="w-full p-1 border rounded"
-                >
-                  {LATE_FLAG_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td className="border p-2">
-                <select 
-                  value={shipment.finalStatus}
-                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'finalStatus', e.target.value)}
-                  className="w-full p-1 border rounded"
-                >
-                  {FINAL_STATUS_OPTIONS.map((status) => (
-                    <option key={status} value={status}>{status}</option>
-                  ))}
-                </select>
-              </td>
-              <td className="border p-2">
-                <select 
-                  value={shipment.lateReason}
-                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'lateReason', e.target.value)}
-                  className="w-full p-1 border rounded"
-                >
-                  <option value="">Select Reason</option>
-                  {LATE_REASON_OPTIONS.map((reason) => (
-                    <option key={reason} value={reason}>{reason}</option>
-                  ))}
-                </select>
-              </td>
-              <td className="border p-2">
-                <div className="h-32 overflow-y-auto">
-                  {shipment.comments.map((comment, index) => (
-                    <div key={index} className="mb-2 pb-2 border-b">
-                      <p className="text-sm text-gray-600">{comment.timestamp}</p>
-                      <p>{comment.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </td>
-              <td className="border p-2">
-                <textarea 
-                  placeholder="Enter comment..."
-                  value={newComments[shipment.id] || ''}
-                  onChange={(e) => handleCommentChange(shipment.id, e.target.value)}
-                  className="w-full p-1 border rounded mb-2 h-24"
-                />
-                <button 
-                  onClick={() => handleAddComment(shipment.id)}
-                  className="w-full bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
-                >
-                  Add Comment
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+	font-size: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      background-color: #fff;
+
+    }
+
+/* Update font size for dropdowns in specific columns */
+#shipmentTable td:nth-child(11) select {
+  font-size: 10px; /* Late Flag dropdown */
+	width: 50px;
+}
+
+#shipmentTable td:nth-child(12) select {
+  font-size: 10px; /* Final Status dropdown */
+	width: 100px;
+}
+
+#shipmentTable td:nth-child(13) select {
+  font-size: 8px; /* Late Reason dropdown */
+	width: 100px;
+}
+
+    th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+	font: 10px;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    select, textarea {
+      font-size: 14px;
+      padding: 8px;
+      width: 100%;
+      border-radius: 8px; /* More rounded input fields */
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+
+    /* Fixed-height comment textarea */
+    textarea {
+      font-size: 14px;
+      padding: 8px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      height: 150px; /* Fixed height */
+      overflow-y: auto; /* Scroll when content exceeds the height */
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px; /* Rounded buttons */
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+/* Fixed height comment section */
+.comment-section {
+  height: 200px; /* Set a fixed height for the entire comment section */
+  overflow-y: auto; /* Allow scrolling if content exceeds the fixed height */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* Ensure the textarea doesn't stretch and scroll if needed */
+.comment-section textarea {
+  width: 100%;
+  height: 100px; /* Fixed height */
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  overflow-y: auto; /* Scroll when content exceeds the height */
+  resize: none; /* Prevent resizing */
+}
+
+/* Fixed size for the button */
+.comment-section button {
+  font-size: 14px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.comment-section button:hover {
+  background-color: #0056b3;
+}
+
+/* Optional: Style the comment-type dropdown */
+.comment-section .comment-type select {
+  width: 100%;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+    /* Filter section */
+    .filter-section {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 12px; /* Round edges for the filter section */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-button {
+      margin-bottom: 10px;
+    }
+
+    .filter-button button {
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #333;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      border-radius: 8px; /* Rounded filter buttons */
+    }
+
+    .filter-button button:hover {
+      background-color: #e2e6ea;
+    }
+
+    .page-nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .page-nav button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      border-radius: 8px; /* Rounded page navigation buttons */
+      color: black;
+    }
+
+    .page-nav button:hover {
+      background-color: #e2e6ea;
+    }
+
+    .p-highlight {
+      background-color: #28a745;
+      color: black;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Shipment Tracking Table</h1>
+
+  <!-- Page Navigation -->
+  <div class="page-nav">
+    <button id="allPage" class="p-highlight">All</button>
+    <button id="latePage">Late</button>
+    <button id="nextDayPage">Next Day</button>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-button">
+      <button type="button" aria-label="Dispatched: 01/10/2024 - 31/10/2024">Dispatched: 01/10/2024 - 31/10/2024</button>
     </div>
-  );
-};
+    <div class="filter-button">
+      <button type="button" aria-label="Customer: Cust XYZ">Customer: Cust XYZ</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" aria-label="Carrier">Carrier</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" aria-label="Service Type">Service Type</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" id="moreFiltersBtn">More Filters</button>
+    </div>
+  </div>
 
-export default ShipmentTrackingTable;
+  <!-- Shipment Table -->
+  <div class="container">
+    <table id="shipmentTable">
+      <thead>
+        <tr>
+          <th>Connote</th>
+          <th>Reference</th>
+          <th>Carrier</th>
+          <th>Dispatch Date</th>
+          <th>ETA</th>
+          <th>Sender Name</th>
+          <th>Sender Address</th>
+          <th>Receiver Name</th>
+          <th>Receiver Address</th>
+          <th>Automated Status</th>
+          <th>Late Flag</th>
+          <th>Final Status</th>
+          <th>Late Reason</th>
+          <th>Investigation Comments</th>
+          <th>Add Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example Shipment Row -->
+        <tr data-status="open">
+          <td>CN123456789</td>
+          <td>REF-987654</td>
+          <td>FastTrack Logistics</td>
+          <td>2024-03-15</td>
+          <td>2024-03-18</td>
+          <td>John Doe</td>
+          <td>123 George St, Sydney, NSW 2000</td>
+          <td>Jane Smith</td>
+          <td>456 Queen St, Melbourne, VIC 3000</td>
+          <td>Ready for Pickup</td>
+          <td>
+            <select>
+              <option value="true">Y</option>
+              <option value="false">N</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>Pending</option>
+              <option>Delivered</option>
+              <option>Cancelled</option>
+              <option>Returned</option>
+              <option>In Progress</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option value="">Select Reason</option>
+              <option>Weather Delay</option>
+              <option>Transportation Issues</option>
+              <option>Customs Clearance</option>
+              <option>Warehouse Backlog</option>
+              <option>Customer Unavailable</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td class="comment-section">
+            <p><strong>2024-03-16 10:30</strong>: Shipment picked up from sender</p>
+            <p><strong>2024-03-17 14:45</strong>: Delayed due to road conditions</p>
+          </td>
+          <td>
+            <div class="comment-type">
+              <label for="comment-type-1">Comment Type:</label>
+              <select id="comment-type-1">
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+            <textarea placeholder="Enter comment..."></textarea>
+            <button>Add Comment</button>
+          </td>
+        </tr>
+        <!-- More rows as necessary -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // JavaScript to handle page navigation
+    const allPageBtn = document.getElementById("allPage");
+    const latePageBtn = document.getElementById("latePage");
+    const nextDayPageBtn = document.getElementById("nextDayPage");
+
+    // Function to show all rows
+    function showAllRows() {
+      const rows = document.querySelectorAll("#shipmentTable tbody tr");
+      rows.forEach(row => {
+        row.style.display = "";
+      });
+      setHighlight(allPageBtn);
+    }
+
+    // Function to show only late shipments
+    function showLatePage() {
+      const rows = document.querySelectorAll("#shipmentTable tbody tr");
+      rows.forEach(row => {
+        if (row.dataset.status === "late") {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+      setHighlight(latePageBtn);
+    }
+
+    // Function to show next day shipments
+    function showNextDayPage() {
+      const rows = document.querySelectorAll("#shipmentTable tbody tr");
+      const nextDay = new Date();
+      nextDay.setDate(nextDay.getDate() + 1);
+      rows.forEach(row => {
+        const eta = new Date(row.cells[4].textContent); // Assuming ETA is in the 5th column
+        if (eta.toDateString() === nextDay.toDateString()) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+      setHighlight(nextDayPageBtn);
+    }
+
+    // Function to set active button highlight
+    function setHighlight(btn) {
+      const buttons = document.querySelectorAll('.page-nav button');
+      buttons.forEach(button => {
+        button.classList.remove('p-highlight');
+      });
+      btn.classList.add('p-highlight');
+    }
+
+    // Event listeners for page buttons
+    allPageBtn.addEventListener('click', showAllRows);
+    latePageBtn.addEventListener('click', showLatePage);
+    nextDayPageBtn.addEventListener('click', showNextDayPage);
+
+    // Default page load
+    showAllRows();
+  </script>
+
+</body>
+</html>
