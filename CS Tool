@@ -1,0 +1,250 @@
+import React, { useState } from 'react';
+
+const ShipmentTrackingTable = () => {
+  // Predefined options for dropdowns
+  const LATE_FLAG_OPTIONS = [
+    { value: 'true', label: 'Yes' },
+    { value: 'false', label: 'No' }
+  ];
+
+  const FINAL_STATUS_OPTIONS = [
+    'Pending',
+    'Delivered',
+    'Cancelled',
+    'Returned',
+    'In Progress'
+  ];
+
+  const LATE_REASON_OPTIONS = [
+    'Weather Delay',
+    'Transportation Issues',
+    'Customs Clearance',
+    'Warehouse Backlog',
+    'Customer Unavailable',
+    'Other'
+  ];
+
+  const AUTOMATED_STATUS_OPTIONS = [
+    'In Transit',
+    'Processing',
+    'Ready for Pickup',
+    'Out for Delivery',
+    'Delayed'
+  ];
+
+  // Sample shipments data
+  const [shipments, setShipments] = useState([
+    {
+      id: 1,
+      dispatchDate: '2024-03-15',
+      eta: '2024-03-18',
+      connoteNumber: 'CN123456789',
+      reference: 'REF-987654',
+      carrier: 'FastTrack Logistics',
+      serviceType: 'Express',
+      sender: {
+        name: 'ABC Manufacturing',
+        address: '123 Industrial Park, Sydney, NSW 2000'
+      },
+      receiver: {
+        name: 'XYZ Distributors',
+        address: '456 Warehouse Lane, Melbourne, VIC 3000'
+      },
+      automatedStatus: 'In Transit',
+      lateFlag: 'true',
+      finalStatus: 'Pending',
+      lateReason: 'Weather Delay',
+      comments: [
+        { timestamp: '2024-03-16 10:30', text: 'Shipment picked up from sender' },
+        { timestamp: '2024-03-17 14:45', text: 'Delayed due to road conditions' }
+      ]
+    },
+    {
+      id: 2,
+      dispatchDate: '2024-03-16',
+      eta: '2024-03-19',
+      connoteNumber: 'CN987654321',
+      reference: 'REF-123456',
+      carrier: 'Swift Shipping',
+      serviceType: 'Standard',
+      sender: {
+        name: 'Global Imports',
+        address: '789 Trade Center, Brisbane, QLD 4000'
+      },
+      receiver: {
+        name: 'Local Retail',
+        address: '321 Main Street, Perth, WA 6000'
+      },
+      automatedStatus: 'Processing',
+      lateFlag: 'false',
+      finalStatus: 'Pending',
+      lateReason: '',
+      comments: [
+        { timestamp: '2024-03-16 09:15', text: 'Shipment booked' }
+      ]
+    }
+  ]);
+
+  // State for new investigation comments
+  const [newComments, setNewComments] = useState({});
+
+  // Handle updating shipment fields
+  const handleUpdateShipmentField = (shipmentId, field, value) => {
+    setShipments(prev => 
+      prev.map(shipment => 
+        shipment.id === shipmentId 
+          ? { ...shipment, [field]: value }
+          : shipment
+      )
+    );
+  };
+
+  // Handle adding a new comment
+  const handleAddComment = (shipmentId) => {
+    const newComment = newComments[shipmentId];
+    if (newComment && newComment.trim()) {
+      setShipments(prev => 
+        prev.map(shipment => 
+          shipment.id === shipmentId 
+            ? {
+                ...shipment,
+                comments: [
+                  ...shipment.comments, 
+                  {
+                    timestamp: new Date().toLocaleString('en-AU', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    }),
+                    text: newComment
+                  }
+                ]
+              }
+            : shipment
+        )
+      );
+
+      // Clear the new comment input
+      setNewComments(prev => ({
+        ...prev,
+        [shipmentId]: ''
+      }));
+    }
+  };
+
+  // Handle new comment input change
+  const handleCommentChange = (shipmentId, value) => {
+    setNewComments(prev => ({
+      ...prev,
+      [shipmentId]: value
+    }));
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <table className="w-full border-collapse border border-gray-200">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border p-2">Connote</th>
+            <th className="border p-2">Reference</th>
+            <th className="border p-2">Carrier</th>
+            <th className="border p-2">Dispatch Date</th>
+            <th className="border p-2">ETA</th>
+            <th className="border p-2">Automated Status</th>
+            <th className="border p-2">Late Flag</th>
+            <th className="border p-2">Final Status</th>
+            <th className="border p-2">Late Reason</th>
+            <th className="border p-2 w-48">Investigation Comments</th>
+            <th className="border p-2 w-48">Add Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {shipments.map((shipment) => (
+            <tr key={shipment.id} className="hover:bg-gray-50">
+              <td className="border p-2">{shipment.connoteNumber}</td>
+              <td className="border p-2">{shipment.reference}</td>
+              <td className="border p-2">{shipment.carrier}</td>
+              <td className="border p-2">{shipment.dispatchDate}</td>
+              <td className="border p-2">{shipment.eta}</td>
+              <td className="border p-2">
+                <select 
+                  value={shipment.automatedStatus}
+                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'automatedStatus', e.target.value)}
+                  className="w-full p-1 border rounded"
+                >
+                  {AUTOMATED_STATUS_OPTIONS.map((status) => (
+                    <option key={status} value={status}>{status}</option>
+                  ))}
+                </select>
+              </td>
+              <td className="border p-2">
+                <select 
+                  value={shipment.lateFlag}
+                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'lateFlag', e.target.value)}
+                  className="w-full p-1 border rounded"
+                >
+                  {LATE_FLAG_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td className="border p-2">
+                <select 
+                  value={shipment.finalStatus}
+                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'finalStatus', e.target.value)}
+                  className="w-full p-1 border rounded"
+                >
+                  {FINAL_STATUS_OPTIONS.map((status) => (
+                    <option key={status} value={status}>{status}</option>
+                  ))}
+                </select>
+              </td>
+              <td className="border p-2">
+                <select 
+                  value={shipment.lateReason}
+                  onChange={(e) => handleUpdateShipmentField(shipment.id, 'lateReason', e.target.value)}
+                  className="w-full p-1 border rounded"
+                >
+                  <option value="">Select Reason</option>
+                  {LATE_REASON_OPTIONS.map((reason) => (
+                    <option key={reason} value={reason}>{reason}</option>
+                  ))}
+                </select>
+              </td>
+              <td className="border p-2">
+                <div className="h-32 overflow-y-auto">
+                  {shipment.comments.map((comment, index) => (
+                    <div key={index} className="mb-2 pb-2 border-b">
+                      <p className="text-sm text-gray-600">{comment.timestamp}</p>
+                      <p>{comment.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </td>
+              <td className="border p-2">
+                <textarea 
+                  placeholder="Enter comment..."
+                  value={newComments[shipment.id] || ''}
+                  onChange={(e) => handleCommentChange(shipment.id, e.target.value)}
+                  className="w-full p-1 border rounded mb-2 h-24"
+                />
+                <button 
+                  onClick={() => handleAddComment(shipment.id)}
+                  className="w-full bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
+                >
+                  Add Comment
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default ShipmentTrackingTable;
