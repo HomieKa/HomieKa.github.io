@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipment Tracking Table</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      padding-top: 30px;
+      color: #333;
+    }
+
+    .container {
+      width: 90%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      background-color: #fff;
+    }
+
+    /* Update font size for dropdowns in specific columns */
+    #shipmentTable td:nth-child(11) select {
+      font-size: 10px; /* Late Flag dropdown */
+      width: 50px;
+    }
+
+    #shipmentTable td:nth-child(12) select {
+      font-size: 10px; /* Final Status dropdown */
+      width: 100px;
+    }
+
+    #shipmentTable td:nth-child(13) select {
+      font-size: 8px; /* Late Reason dropdown */
+      width: 100px;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+      font-size: 10px;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    select, textarea {
+      font-size: 14px;
+      padding: 8px;
+      width: 100%;
+      border-radius: 8px; /* More rounded input fields */
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+
+    /* Fixed-height comment textarea */
+    textarea {
+      font-size: 14px;
+      padding: 8px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      height: 150px; /* Fixed height */
+      overflow-y: auto; /* Scroll when content exceeds the height */
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px; /* Rounded buttons */
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Fixed height comment section */
+    .comment-section {
+      height: 200px; /* Set a fixed height for the entire comment section */
+      overflow-y: auto; /* Allow scrolling if content exceeds the fixed height */
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    /* Ensure the textarea doesn't stretch and scroll if needed */
+    .comment-section textarea {
+      width: 100%;
+      height: 100px; /* Fixed height */
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      overflow-y: auto; /* Scroll when content exceeds the height */
+      resize: none; /* Prevent resizing */
+    }
+
+    /* Fixed size for the button */
+    .comment-section button {
+      font-size: 14px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .comment-section button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Optional: Style the comment-type dropdown */
+    .comment-section .comment-type select {
+      width: 100%;
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+
+    /* Filter section */
+    .filter-section {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 12px; /* Round edges for the filter section */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-button {
+      margin-bottom: 10px;
+    }
+
+    .filter-button button {
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #333;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      border-radius: 8px; /* Rounded filter buttons */
+    }
+
+    .filter-button button:hover {
+      background-color: #e2e6ea;
+    }
+
+    .page-nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .page-nav button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      border-radius: 8px; /* Rounded page navigation buttons */
+      color: black;
+    }
+
+    .page-nav button:hover {
+      background-color: #e2e6ea;
+    }
+
+    .p-highlight {
+      background-color: #28a745;
+      color: black;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Shipment Tracking Table</h1>
+
+  <!-- Page Navigation -->
+  <div class="page-nav">
+    <button id="allPage" class="p-highlight">All</button>
+    <button id="latePage">Late</button>
+    <button id="nextDayPage">Next Day</button>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-button">
+      <button type="button" aria-label="Dispatched: 01/10/2024 - 31/10/2024">Dispatched: 01/10/2024 - 31/10/2024</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" aria-label="Customer: Cust XYZ">Customer: Cust XYZ</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" aria-label="Carrier">Carrier</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" aria-label="Service Type">Service Type</button>
+    </div>
+    <div class="filter-button">
+      <button type="button" id="moreFiltersBtn">More Filters</button>
+    </div>
+  </div>
+
+  <!-- Shipment Table -->
+  <div class="container">
+    <table id="shipmentTable">
+      <thead>
+        <tr>
+          <th>Connote</th>
+          <th>Reference</th>
+          <th>Carrier</th>
+          <th>Dispatch Date</th>
+          <th>ETA</th>
+          <th>Sender Name</th>
+          <th>Sender Address</th>
+          <th>Receiver Name</th>
+          <th>Receiver Address</th>
+          <th>Automated Status</th>
+          <th>Late Flag</th>
+          <th>Final Status</th>
+          <th>Late Reason</th>
+          <th>Investigation Comments</th>
+          <th>Add Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example Shipment Row -->
+        <tr data-status="open">
+          <td>CN123456789</td>
+          <td>REF-987654</td>
+          <td>FastTrack Logistics</td>
+          <td>2024-03-15</td>
+          <td>2024-03-18</td>
+          <td>John Doe</td>
+          <td>123 George St, Sydney, NSW 2000</td>
+          <td>Jane Smith</td>
+          <td>456 Queen St, Melbourne, VIC 3000</td>
+          <td>Ready for Pickup</td>
+          <td>
+            <select>
+              <option value="true">Y</option>
+              <option value="false">N</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>Pending</option>
+              <option>Delivered</option>
+              <option>Cancelled</option>
+              <option>Returned</option>
+              <option>In Transit</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>Delayed</option>
+              <option>Lost</option>
+              <option>Address Issue</option>
+            </select>
+          </td>
+          <td>
+            <div class="comment-section">
+              <p>Investigating delay at customs.</p>
+              <button type="button" aria-label="Investigation Action">Investigation Action</button>
+            </div>
+          </td>
+          <td>
+            <select>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+            <textarea placeholder="Add comment..."></textarea>
+            <button type="button">Add Comment</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Example script for page navigation functionality
+    const allPageButton = document.getElementById('allPage');
+    const latePageButton = document.getElementById('latePage');
+    const nextDayPageButton = document.getElementById('nextDayPage');
+
+    allPageButton.addEventListener('click', function() {
+      this.classList.add('p-highlight');
+      latePageButton.classList.remove('p-highlight');
+      nextDayPageButton.classList.remove('p-highlight');
+      // Update table content to show all shipments
+    });
+
+    latePageButton.addEventListener('click', function() {
+      this.classList.add('p-highlight');
+      allPageButton.classList.remove('p-highlight');
+      nextDayPageButton.classList.remove('p-highlight');
+      // Update table content to show late shipments
+    });
+
+    nextDayPageButton.addEventListener('click', function() {
+      this.classList.add('p-highlight');
+      allPageButton.classList.remove('p-highlight');
+      latePageButton.classList.remove('p-highlight');
+      // Update table content to show shipments for the next day
+    });
+  </script>
+</body>
+</html>
