@@ -28,7 +28,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-	font-size: 10px;
+      font-size: 10px;
     }
 
     th, td {
@@ -36,24 +36,23 @@
       text-align: left;
       border-bottom: 1px solid #ddd;
       background-color: #fff;
-
     }
 
-/* Update font size for dropdowns in specific columns */
-#shipmentTable td:nth-child(11) select {
-  font-size: 10px; /* Late Flag dropdown */
-	width: 50px;
-}
+    /* Update font size for dropdowns in specific columns */
+    #shipmentTable td:nth-child(11) select {
+      font-size: 10px; /* Late Flag dropdown */
+      width: 50px;
+    }
 
-#shipmentTable td:nth-child(12) select {
-  font-size: 10px; /* Final Status dropdown */
-	width: 100px;
-}
+    #shipmentTable td:nth-child(12) select {
+      font-size: 10px; /* Final Status dropdown */
+      width: 100px;
+    }
 
-#shipmentTable td:nth-child(13) select {
-  font-size: 8px; /* Late Reason dropdown */
-	width: 100px;
-}
+    #shipmentTable td:nth-child(13) select {
+      font-size: 8px; /* Late Reason dropdown */
+      width: 100px;
+    }
 
     th {
       background-color: #007bff;
@@ -63,7 +62,7 @@
 
     tr:nth-child(even) {
       background-color: #f9f9f9;
-	font: 10px;
+      font-size: 10px;
     }
 
     tr:hover {
@@ -105,54 +104,54 @@
       background-color: #0056b3;
     }
 
-/* Fixed height comment section */
-.comment-section {
-  height: 200px; /* Set a fixed height for the entire comment section */
-  overflow-y: auto; /* Allow scrolling if content exceeds the fixed height */
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
+    /* Fixed height comment section */
+    .comment-section {
+      height: 200px; /* Set a fixed height for the entire comment section */
+      overflow-y: auto; /* Allow scrolling if content exceeds the fixed height */
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
 
-/* Ensure the textarea doesn't stretch and scroll if needed */
-.comment-section textarea {
-  width: 100%;
-  height: 100px; /* Fixed height */
-  font-size: 14px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  overflow-y: auto; /* Scroll when content exceeds the height */
-  resize: none; /* Prevent resizing */
-}
+    /* Ensure the textarea doesn't stretch and scroll if needed */
+    .comment-section textarea {
+      width: 100%;
+      height: 100px; /* Fixed height */
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      overflow-y: auto; /* Scroll when content exceeds the height */
+      resize: none; /* Prevent resizing */
+    }
 
-/* Fixed size for the button */
-.comment-section button {
-  font-size: 14px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-}
+    /* Fixed size for the button */
+    .comment-section button {
+      font-size: 14px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
 
-.comment-section button:hover {
-  background-color: #0056b3;
-}
+    .comment-section button:hover {
+      background-color: #0056b3;
+    }
 
-/* Optional: Style the comment-type dropdown */
-.comment-section .comment-type select {
-  width: 100%;
-  font-size: 14px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-}
+    /* Optional: Style the comment-type dropdown */
+    .comment-section .comment-type select {
+      width: 100%;
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
 
     /* Filter section */
     .filter-section {
@@ -210,7 +209,6 @@
       color: black;
       font-weight: bold;
     }
-
   </style>
 </head>
 <body>
@@ -290,102 +288,61 @@
               <option>Delivered</option>
               <option>Cancelled</option>
               <option>Returned</option>
-              <option>In Progress</option>
+              <option>In Transit</option>
             </select>
           </td>
           <td>
             <select>
-              <option value="">Select Reason</option>
-              <option>Weather Delay</option>
-              <option>Transportation Issues</option>
-              <option>Customs Clearance</option>
-              <option>Warehouse Backlog</option>
-              <option>Customer Unavailable</option>
-              <option>Other</option>
+              <option>Delayed</option>
+              <option>Lost</option>
+              <option>Address Issue</option>
             </select>
           </td>
-          <td class="comment-section">
-            <p><strong>2024-03-16 10:30</strong>: Shipment picked up from sender</p>
-            <p><strong>2024-03-17 14:45</strong>: Delayed due to road conditions</p>
+          <td>
+            <div class="comment-section">
+              <p>Investigating delay at customs.</p>
+              <button type="button" aria-label="Investigation Action">Investigation Action</button>
+            </div>
           </td>
           <td>
-            <div class="comment-type">
-              <label for="comment-type-1">Comment Type:</label>
-              <select id="comment-type-1">
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-            </div>
-            <textarea placeholder="Enter comment..."></textarea>
-            <button>Add Comment</button>
+            <select>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+            <textarea placeholder="Add comment..."></textarea>
+            <button type="button">Add Comment</button>
           </td>
         </tr>
-        <!-- More rows as necessary -->
       </tbody>
     </table>
   </div>
 
   <script>
-    // JavaScript to handle page navigation
-    const allPageBtn = document.getElementById("allPage");
-    const latePageBtn = document.getElementById("latePage");
-    const nextDayPageBtn = document.getElementById("nextDayPage");
+    // Example script for page navigation functionality
+    const allPageButton = document.getElementById('allPage');
+    const latePageButton = document.getElementById('latePage');
+    const nextDayPageButton = document.getElementById('nextDayPage');
 
-    // Function to show all rows
-    function showAllRows() {
-      const rows = document.querySelectorAll("#shipmentTable tbody tr");
-      rows.forEach(row => {
-        row.style.display = "";
-      });
-      setHighlight(allPageBtn);
-    }
+    allPageButton.addEventListener('click', function() {
+      this.classList.add('p-highlight');
+      latePageButton.classList.remove('p-highlight');
+      nextDayPageButton.classList.remove('p-highlight');
+      // Update table content to show all shipments
+    });
 
-    // Function to show only late shipments
-    function showLatePage() {
-      const rows = document.querySelectorAll("#shipmentTable tbody tr");
-      rows.forEach(row => {
-        if (row.dataset.status === "late") {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
-      });
-      setHighlight(latePageBtn);
-    }
+    latePageButton.addEventListener('click', function() {
+      this.classList.add('p-highlight');
+      allPageButton.classList.remove('p-highlight');
+      nextDayPageButton.classList.remove('p-highlight');
+      // Update table content to show late shipments
+    });
 
-    // Function to show next day shipments
-    function showNextDayPage() {
-      const rows = document.querySelectorAll("#shipmentTable tbody tr");
-      const nextDay = new Date();
-      nextDay.setDate(nextDay.getDate() + 1);
-      rows.forEach(row => {
-        const eta = new Date(row.cells[4].textContent); // Assuming ETA is in the 5th column
-        if (eta.toDateString() === nextDay.toDateString()) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
-      });
-      setHighlight(nextDayPageBtn);
-    }
-
-    // Function to set active button highlight
-    function setHighlight(btn) {
-      const buttons = document.querySelectorAll('.page-nav button');
-      buttons.forEach(button => {
-        button.classList.remove('p-highlight');
-      });
-      btn.classList.add('p-highlight');
-    }
-
-    // Event listeners for page buttons
-    allPageBtn.addEventListener('click', showAllRows);
-    latePageBtn.addEventListener('click', showLatePage);
-    nextDayPageBtn.addEventListener('click', showNextDayPage);
-
-    // Default page load
-    showAllRows();
+    nextDayPageButton.addEventListener('click', function() {
+      this.classList.add('p-highlight');
+      allPageButton.classList.remove('p-highlight');
+      latePageButton.classList.remove('p-highlight');
+      // Update table content to show shipments for the next day
+    });
   </script>
-
 </body>
 </html>
