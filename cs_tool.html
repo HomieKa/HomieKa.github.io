@@ -283,203 +283,304 @@
 
         class ShipmentTracker {
             constructor() {
-                this.shipments = [
-    {
-        customer: 'Customer ABC',
-        connote: 'CN123456789',
-        carrier: 'FastTrack Logistics',
-        dispatchDate: '2024-03-15',
-        senderAddress: 'Melbourne, VIC, 3000',
-        receiverAddress: 'Sydney, NSW, 2000',
-        trackingDetails: [
-            {
-                date: '2024-03-15',
-                status: 'Picked-Up',
-                description: 'Pickup from Customer Depot'
-            },
-            {
-                date: '2024-03-15',
-                status: 'In-Transit',
-                description: 'In Transit to Sydney'
-            },
-            {
-                date: '2024-03-18',
-                status: 'In-Transit',
-                description: 'Arrived at Sydney Depot'
-            },
-        ],
-        eta: '2024-03-18',
-        status: 'In Transit',
-        completed: 'N',
-        isFlagged: false,
-        trackingUrl: 'https://example.com/tracking/CN123456789',
-        comments: [
-            {
-                type: 'Public',
-                text: 'Shipment picked-up from sender in Melbourne.',
-                commentsby: 'Customer Service Person 1',
-                timestamp: '2024-03-15T10:00:00Z'
-            },
-            {
-                type: 'Private',
-                text: 'Carrier was delayed in transit due to traffic.',
-                commentsby: 'Customer Service Person 1',
-                timestamp: '2024-03-17T14:30:00Z'
-            }
-        ]
-    },
-    {
-        customer: 'Customer ABC',
-        connote: 'CN987654321',
-        carrier: 'SpeedyShip Solutions',
-        dispatchDate: '2024-03-20',
-        senderAddress: 'Melbourne, VIC, 3000',
-        receiverAddress: 'Brisbane, QLD, 4000',
-        trackingDetails: [
-            {
-                date: '2024-03-15',
-                status: 'Picked-Up',
-                description: 'Pickup from Customer Depot'
-            },
-            {
-                date: '2024-03-15',
-                status: 'In-Transit',
-                description: 'In Transit to Brisbane'
-            },
-            {
-                date: '2024-03-18',
-                status: 'In-Transit',
-                description: 'Arrived at Brisbane Depot'
-            },
-        ],
-        eta: '2024-03-25',
-        status: 'In Transit',
-        completed: 'N',
-        isFlagged: false,
-        trackingUrl: 'https://example.com/tracking/CN987654321',
-        comments: [
-            {
-                type: 'Private',
-                text: 'Heavy rains causing some delays along the route.',
-                commentsby: 'Customer Service Person 1',
-                timestamp: '2024-03-21T09:00:00Z'
-            }
-        ]
-    },
-    {
-        customer: 'Customer BCD',
-        connote: 'CN223344556',
-        carrier: 'UltraSpeed Couriers',
-        dispatchDate: '2024-03-12',
-        senderAddress: 'Melbourne, VIC, 3000',
-        receiverAddress: 'Perth, WA, 6000',
-        trackingDetails: [
-            { date: '2024-03-12', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
-            { date: '2024-03-13', status: 'In-Transit', description: 'Departed Melbourne Depot' },
-            { date: '2024-03-15', status: 'In-Transit', description: 'Arrived at Perth Depot' },
-            { date: '2024-03-20', status: 'Delayed', description: 'Delayed due to vehicle breakdown' },
-            { date: '2024-03-21', status: 'Out for Delivery', description: 'Shipment is out for Delivery' }
-        ],
-        eta: '2024-03-20',
-        status: 'Out For Delivery',
-        completed: 'N',
-        isFlagged: false,
-        trackingUrl: 'https://example.com/tracking/CN223344556',
-        comments: [
-            {
-                type: 'Public',
-                text: 'Shipment delayed due to vehicle breakdown on the road.',
-                commentsby: 'Customer Service Person 1',
-                timestamp: '2024-03-14T09:30:00Z'
-            },
-            {
-                type: 'Private',
-                text: 'Carrier is working on rerouting to minimize further delays.',
-                commentsby: 'Customer Service Person 1',
-                timestamp: '2024-03-17T15:00:00Z'
-            },
-            {
-                type: 'Public',
-                text: 'Shipment delayed but expected to arrive soon.',
-                commentsby: 'Customer Service Person 2',
-                timestamp: '2024-03-19T12:45:00Z'
-            },
-            {
-                type: 'Private',
-                text: 'Followed up with Carrier for Updates.',
-                commentsby: 'Customer Service Person 2',
-                timestamp: '2024-03-22T12:45:00Z'
-            }
-        ]
-    },
-    {
-        customer: 'Customer BCD',
-        connote: 'CN445566778',
-        carrier: 'QuickShip Worldwide',
-        dispatchDate: '2024-03-14',
-        senderAddress: 'Sydney, NSW, 2000',
-        receiverAddress: 'Brisbane, QLD, 4000',
-        trackingDetails: [
-            { date: '2024-03-14', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
-            { date: '2024-03-15', status: 'In-Transit', description: 'Departed Sydney Depot' },
-            { date: '2024-03-16', status: 'Not yet on line haul', description: 'Pending dispatch' },
-            { date: '2024-03-18', status: 'Delayed', description: 'Delays due to road closure' },
-            { date: '2024-03-20', status: 'In-Transit', description: 'Shipment back on track to Brisbane' }
-        ],
-        eta: '2024-03-18',
-        status: 'In Transit',
-        completed: 'N',
-        isFlagged: true,
-        trackingUrl: 'https://example.com/tracking/CN445566778',
-        comments: [
-            {
-                type: 'Private',
-                text: 'Shipment delayed due to road closure in regional areas.',
-                commentsby: 'Customer Service Person 2',
-                timestamp: '2024-03-15T08:00:00Z'
-            },
-            {
-                type: 'Public',
-                text: 'Delays expected due to unexpected road closures.',
-                commentsby: 'Customer Service Person 2',
-                timestamp: '2024-03-17T15:30:00Z'
-            }
-        ]
-    },
-    {
-        customer: 'Customer EFG',
-        connote: 'CN667788990',
-        carrier: 'GlobalExpress Logistics',
-        dispatchDate: '2024-03-18',
-        senderAddress: 'Brisbane, QLD, 4000',
-        receiverAddress: 'Melbourne, VIC, 3000',
-        trackingDetails: [
-            { date: '2024-03-18', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
-        ],
-        eta: '2024-03-24',
-        status: 'Picked-Up',
-        completed: 'N',
-        isFlagged: false,
-        trackingUrl: 'https://example.com/tracking/CN667788990',
-        comments: [
-            {
-                type: 'Public',
-                text: 'Shipment still not dispatched, expecting delay.',
-                commentsby: 'Customer Service Person 3',
-                timestamp: '2024-03-19T11:00:00Z'
-            },
-            {
-                type: 'Private',
-                text: 'Carrier is facing delays due to truck scheduling conflicts.',
-                commentsby: 'Customer Service Person 3',
-                timestamp: '2024-03-21T16:30:00Z'
-            }
-        ]
-    }
-];
-                this.sortOrder = 'asc'; // Default sort order
-                this.sortColumn = 'connote'; // Default column to sort by
-                this.populateCustomerFilter();
+                this.shipments = 
+                [
+                    {
+                        customer: 'Customer ABC',
+                        connote: 'CN123456789',
+                        carrier: 'FastTrack Logistics',
+                        dispatchDate: '2024-03-15',
+                        senderAddress: 'Melbourne, VIC, 3000',
+                        receiverAddress: 'Sydney, NSW, 2000',
+                        trackingDetails: [
+                            {
+                                date: '2024-03-15',
+                                status: 'Picked-Up',
+                                description: 'Pickup from Customer Depot'
+                            },
+                            {
+                                date: '2024-03-15',
+                                status: 'In-Transit',
+                                description: 'In Transit to Sydney'
+                            },
+                            {
+                                date: '2024-03-18',
+                                status: 'In-Transit',
+                                description: 'Arrived at Sydney Depot'
+                            },
+                        ],
+                        eta: '2024-03-18',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN123456789',
+                        comments: [
+                            {
+                                type: 'Public',
+                                text: 'Shipment picked-up from sender in Melbourne.',
+                                commentsby: 'Customer Service Person 1',
+                                timestamp: '2024-03-15T10:00:00Z'
+                            },
+                            {
+                                type: 'Private',
+                                text: 'Carrier was delayed in transit due to traffic.',
+                                commentsby: 'Customer Service Person 1',
+                                timestamp: '2024-03-17T14:30:00Z'
+                            }
+                        ]
+                    },
+                    {
+                        customer: 'Customer ABC',
+                        connote: 'CN987654321',
+                        carrier: 'SpeedyShip Solutions',
+                        dispatchDate: '2024-03-20',
+                        senderAddress: 'Melbourne, VIC, 3000',
+                        receiverAddress: 'Brisbane, QLD, 4000',
+                        trackingDetails: [
+                            {
+                                date: '2024-03-15',
+                                status: 'Picked-Up',
+                                description: 'Pickup from Customer Depot'
+                            },
+                            {
+                                date: '2024-03-15',
+                                status: 'In-Transit',
+                                description: 'In Transit to Brisbane'
+                            },
+                            {
+                                date: '2024-03-18',
+                                status: 'In-Transit',
+                                description: 'Arrived at Brisbane Depot'
+                            },
+                        ],
+                        eta: '2024-03-25',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN987654321',
+                        comments: [
+                            {
+                                type: 'Private',
+                                text: 'Heavy rains causing some delays along the route.',
+                                commentsby: 'Customer Service Person 1',
+                                timestamp: '2024-03-21T09:00:00Z'
+                            }
+                        ]
+                    },
+                    {
+                        customer: 'Customer BCD',
+                        connote: 'CN223344556',
+                        carrier: 'UltraSpeed Couriers',
+                        dispatchDate: '2024-03-12',
+                        senderAddress: 'Melbourne, VIC, 3000',
+                        receiverAddress: 'Perth, WA, 6000',
+                        trackingDetails: [
+                            { date: '2024-03-12', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-13', status: 'In-Transit', description: 'Departed Melbourne Depot' },
+                            { date: '2024-03-15', status: 'In-Transit', description: 'Arrived at Perth Depot' },
+                            { date: '2024-03-20', status: 'Delayed', description: 'Delayed due to vehicle breakdown' },
+                            { date: '2024-03-21', status: 'Out for Delivery', description: 'Shipment is out for Delivery' }
+                        ],
+                        eta: '2024-03-20',
+                        status: 'Out For Delivery',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN223344556',
+                        comments: [
+                            {
+                                type: 'Public',
+                                text: 'Shipment delayed due to vehicle breakdown on the road.',
+                                commentsby: 'Customer Service Person 1',
+                                timestamp: '2024-03-14T09:30:00Z'
+                            },
+                            {
+                                type: 'Private',
+                                text: 'Carrier is working on rerouting to minimize further delays.',
+                                commentsby: 'Customer Service Person 1',
+                                timestamp: '2024-03-17T15:00:00Z'
+                            },
+                            {
+                                type: 'Public',
+                                text: 'Shipment delayed but expected to arrive soon.',
+                                commentsby: 'Customer Service Person 2',
+                                timestamp: '2024-03-19T12:45:00Z'
+                            },
+                            {
+                                type: 'Private',
+                                text: 'Followed up with Carrier for Updates.',
+                                commentsby: 'Customer Service Person 2',
+                                timestamp: '2024-03-22T12:45:00Z'
+                            }
+                        ]
+                    },
+                    {
+                        customer: 'Customer BCD',
+                        connote: 'CN445566778',
+                        carrier: 'QuickShip Worldwide',
+                        dispatchDate: '2024-03-14',
+                        senderAddress: 'Sydney, NSW, 2000',
+                        receiverAddress: 'Brisbane, QLD, 4000',
+                        trackingDetails: [
+                            { date: '2024-03-14', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-15', status: 'In-Transit', description: 'Departed Sydney Depot' },
+                            { date: '2024-03-16', status: 'Not yet on line haul', description: 'Pending dispatch' },
+                            { date: '2024-03-18', status: 'Delayed', description: 'Delays due to road closure' },
+                            { date: '2024-03-20', status: 'In-Transit', description: 'Shipment back on track to Brisbane' }
+                        ],
+                        eta: '2024-03-18',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: true,
+                        trackingUrl: 'https://example.com/tracking/CN445566778',
+                        comments: [
+                            {
+                                type: 'Private',
+                                text: 'Shipment delayed due to road closure in regional areas.',
+                                commentsby: 'Customer Service Person 2',
+                                timestamp: '2024-03-15T08:00:00Z'
+                            },
+                            {
+                                type: 'Public',
+                                text: 'Delays expected due to unexpected road closures.',
+                                commentsby: 'Customer Service Person 2',
+                                timestamp: '2024-03-17T15:30:00Z'
+                            }
+                        ]
+                    },
+                    {
+                        customer: 'Customer EFG',
+                        connote: 'CN667788990',
+                        carrier: 'GlobalExpress Logistics',
+                        dispatchDate: '2024-03-18',
+                        senderAddress: 'Brisbane, QLD, 4000',
+                        receiverAddress: 'Melbourne, VIC, 3000',
+                        trackingDetails: [
+                            { date: '2024-03-18', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                        ],
+                        eta: '2024-03-24',
+                        status: 'Picked-Up',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN667788990',
+                        comments: [
+                            {
+                                type: 'Public',
+                                text: 'Shipment still not dispatched, expecting delay.',
+                                commentsby: 'Customer Service Person 3',
+                                timestamp: '2024-03-19T11:00:00Z'
+                            },
+                            {
+                                type: 'Private',
+                                text: 'Carrier is facing delays due to truck scheduling conflicts.',
+                                commentsby: 'Customer Service Person 3',
+                                timestamp: '2024-03-21T16:30:00Z'
+                            }
+                        ]
+                    },
+                    {
+                        customer: 'Customer JKL',
+                        connote: 'CN123789456',
+                        carrier: 'SpeedyTransport',
+                        dispatchDate: '2024-03-25',
+                        senderAddress: 'Perth, WA, 6000',
+                        receiverAddress: 'Melbourne, VIC, 3000',
+                        trackingDetails: [
+                            { date: '2024-03-25', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-26', status: 'In-Transit', description: 'In Transit to Melbourne' },
+                            { date: '2024-03-28', status: 'Arrived', description: 'Arrived at Melbourne Depot' },
+                        ],
+                        eta: '2024-03-29',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN123789456',
+                        comments: [
+                            { type: 'Public', text: 'Pickup completed in Perth and shipment on its way.', commentsby: 'Customer Service Person 1', timestamp: '2024-03-25T11:00:00Z' }
+                        ]
+                    },
+                    {
+                        customer: 'Customer MNO',
+                        connote: 'CN456123789',
+                        carrier: 'QuickShip Express',
+                        dispatchDate: '2024-03-26',
+                        senderAddress: 'Adelaide, SA, 5000',
+                        receiverAddress: 'Sydney, NSW, 2000',
+                        trackingDetails: [
+                            { date: '2024-03-26', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-27', status: 'In-Transit', description: 'In Transit to Sydney' },
+                        ],
+                        eta: '2024-03-30',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN456123789',
+                        comments: []
+                    },
+                    {
+                        customer: 'Customer PQR',
+                        connote: 'CN789456123',
+                        carrier: 'FastLogistics Worldwide',
+                        dispatchDate: '2024-03-28',
+                        senderAddress: 'Brisbane, QLD, 4000',
+                        receiverAddress: 'Canberra, ACT, 2600',
+                        trackingDetails: [
+                            { date: '2024-03-28', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-29', status: 'In-Transit', description: 'In Transit to Canberra' },
+                        ],
+                        eta: '2024-03-31',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN789456123',
+                        comments: [
+                            { type: 'Public', text: 'Shipment picked-up from Brisbane, on the way to Canberra.', commentsby: 'Customer Service Person 2', timestamp: '2024-03-28T09:30:00Z' }
+                        ]
+                    },
+                    {
+                        customer: 'Customer STU',
+                        connote: 'CN951357246',
+                        carrier: 'SpeedShip Logistics',
+                        dispatchDate: '2024-03-30',
+                        senderAddress: 'Sydney, NSW, 2000',
+                        receiverAddress: 'Hobart, TAS, 7000',
+                        trackingDetails: [
+                            { date: '2024-03-30', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-31', status: 'In-Transit', description: 'In Transit to Hobart' },
+                        ],
+                        eta: '2024-04-02',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN951357246',
+                        comments: []
+                    },
+                    {
+                        customer: 'Customer VWX',
+                        connote: 'CN234678901',
+                        carrier: 'BlueSky Couriers',
+                        dispatchDate: '2024-03-20',
+                        senderAddress: 'Melbourne, VIC, 3000',
+                        receiverAddress: 'Brisbane, QLD, 4000',
+                        trackingDetails: [
+                            { date: '2024-03-20', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+                            { date: '2024-03-21', status: 'In-Transit', description: 'In Transit to Brisbane' },
+                            { date: '2024-03-23', status: 'Arrived', description: 'Arrived at Brisbane Depot' },
+                        ],
+                        eta: '2024-03-24',
+                        status: 'In Transit',
+                        completed: 'N',
+                        isFlagged: false,
+                        trackingUrl: 'https://example.com/tracking/CN234678901',
+                        comments: [
+                            { type: 'Private', text: 'Shipment facing minor delays due to high traffic in Melbourne.', commentsby: 'Customer Service Person 1', timestamp: '2024-03-20T13:00:00Z' }
+                        ]
+                    }
+
+                ];
+
+            this.sortOrder = 'asc'; // Default sort order
+            this.sortColumn = 'connote'; // Default column to sort by
+            this.populateCustomerFilter();
             }
 
             renderShipments(filter = '') {
