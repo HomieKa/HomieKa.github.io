@@ -24,12 +24,30 @@
         #shipmentTable tbody td:nth-child(2) {
             text-align: left;
         }
+        #shipmentTable td, #shipmentTable th {
+            border-bottom: none; 
+            padding: 10px;
+            text-align: center;
+        }
+
+        #shipmentTable tbody tr {
+    border-bottom: 1px solid #e0e0e0; /* Light grey border for row separation */
+}
         input[type="date"]:hover {
             border-color: #4CAF50;  /* Green border on hover */
         }
         input[type="date"] {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        #shipmentTable tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+        }
+
+        #shipmentTable tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+                
 
 
     </style>
@@ -638,7 +656,7 @@
                         <td class="p-3 border-b">${shipment.dispatchDate}</td>
                         <td class="p-3 border-b">${shipment.eta}</td>
                         <td class="p-3 border-b status-icon">
-                            <span class="${this.getStatusColor(shipment.status)}">${shipment.status}</span>
+                            <span class="status-text ${this.getStatusColor(shipment.status)}">${shipment.status}</span>
                         </td>
                         <td class="p-3 border-b">${shipment.completed === 'Y' ? 'Yes' : 'No'}</td>
                         <td class="p-3 border-b">${lateDays > 0 ? lateDays : 'On time'}</td>
