@@ -20,74 +20,120 @@
             background-color: rgba(191, 219, 254, 0.5);
             border-left: 4px solid rgb(59, 130, 246);
         }
+
+        #shipmentTable tbody td:nth-child(2) {
+            text-align: left;
+        }
+        input[type="date"]:hover {
+            border-color: #4CAF50;  /* Green border on hover */
+        }
+        input[type="date"] {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+
     </style>
 </head>
 <body class="bg-gray-50">
-    <div class="container mx-auto p-6">
-        <div class="bg-white shadow-md rounded-lg">
-            <div class="flex justify-between items-center p-6 border-b">
-                <h1 class="text-2xl font-bold text-gray-800">Shipment Tracking Dashboard</h1>
+    <div class="container mx-auto p-3">
+            <div class="bg-white shadow-md rounded-lg">
+                <div class="flex justify-between items-center p-3 border-b">
+                    <h1 class="text-2xl font-bold text-gray-800">Shipment Tracking Dashboard</h1>
+ 
+                    
+                <!-- Filter Buttons -->
+                <div class="flex gap-3 mb-1">
+
+
+
+                    <button id="filterAllBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-orange-600 transition">
+                        All Shipments
+                    </button>
+                    <button id="filterLateBtn" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+                        Late Shipments
+                    </button>
+                    <button id="filterMissedLinehaulBtn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                        Missed Linehaul
+                    </button>
+                    <button id="filterImportantBtn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                        Important Shipments
+                    </button>
+
+
+
+
+
+                <!-- Export to Excel Button -->
+                    <button id="exportBtn" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" x2="12" y1="15" y2="3"/>
+                        </svg>
+                        Export to Excel
+                    </button>
+
+                </div>
                 
-            <!-- Filter Buttons -->
-            <div class="flex gap-4 mb-4">
-                <button id="filterAllBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-orange-600 transition">
-                    All Shipments
-                </button>
-                <button id="filterLateBtn" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-                    Late Shipments
-                </button>
-                <button id="filterMissedLinehaulBtn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
-                    Missed Linehaul
-                </button>
-
-            <!-- Export to Excel Button -->
-            <button id="exportBtn" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" x2="12" y1="15" y2="3"/>
-                </svg>
-                Export to Excel
-            </button>
             </div>
+            <div class="flex gap-3 mb-4 p-4">
+                <!-- Display Today's Date -->
+                <h1 class="text-s font-bold text-gray-800">
+                Today's Date:
+                <span id="currentDate" class="font-normal text-gray-600 mb-4 pr-8"></span>
 
+                Dispatch Date:
+                <input type="date" id="startDate" class="px-3 py-1 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-normal" />
+                
+                Customer:
+                <select id="customerFilter" class="px-3 py-1 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-normal">
+                    <option value="">Select Customer</option>
+                </select>
+
+                </h1>
             </div>
+           
+        </div>
+            
+ 
 
-            <div class="container mx-auto p-3">
-                <h1 class="text-1xl font-bold text-gray-800">Today's Date:</h1>  <span id="currentDate"></span>
-            </div>
-
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" style="display: flex; justify-content: center; width: 100%;">
                 <table class="w-full" id="shipmentTable">
                     <thead class="bg-blue-50">
                         <tr>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('connote')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('customer')">
+                                Customer
+                            </th>
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('connote')">
                                 Connote
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('carrier')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('carrier')">
                                 Carrier
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('dispatchDate')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('dispatchDate')">
                                 Dispatch Date
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('eta')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('eta')">
                                 ETA
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('status')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('status')">
                                 Status
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('completed')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('completed')">
                                 Completed
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('lateDays')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('lateDays')">
                                 Late Days
                             </th>
-                            <th class="p-3 text-left font-semibold text-gray-700 border-b">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b">
+                                Important
+                            </th>
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b">
                                 Actions
                             </th>
                         </tr>
                     </thead>
-                    <tbody id="shipmentTableBody">
+                    <tbody id="shipmentTableBody" style="justify-content: center; text-align: center;">
                         <!-- Shipments will be dynamically added here -->
                     </tbody>
                 </table>
@@ -109,6 +155,11 @@
 
                 <!-- Shipment Details -->
                 <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div>
+                        <label class="block font-semibold mb-2">Customer</label>
+                        <p id="detailCustomer"></p>
+                    </div>
+
                     <div>
                         <label class="block font-semibold mb-2">Carrier</label>
                         <p id="detailCarrier"></p>
@@ -171,8 +222,10 @@
                         <div>
                             <label class="block mb-2">Current Status</label>
                             <select id="statusSelect" class="w-full border rounded p-2">
+                                <option>Manifested</option>
+                                <option>Booked</option>
+                                <option>Picked-Up</option>
                                 <option>In Transit</option>
-                                <option>Delayed</option>
                                 <option>Delivered</option>
                                 <option>Returned</option>
                                 <option>Lost</option>
@@ -226,511 +279,245 @@
         let formattedDate = todayDate.toDateString();  // e.g., "Tue May 01 2024"
         // Insert the date into the HTML
         document.getElementById("currentDate").textContent = formattedDate;
+        todayDate.setHours(0, 0, 0, 0);
 
         class ShipmentTracker {
             constructor() {
                 this.shipments = [
-                    {
-                        connote: 'CN123456789',
-                        carrier: 'FastTrack Logistics',
-                        dispatchDate: '2024-03-15',
-                        senderAddress: 'Melbourne, VIC, 3000',
-                        receiverAddress: 'Sydney, NSW, 2000',
-                        trackingDetails: [
-                            {
-                                date: '2024-03-15',
-                                status: 'picked-up',
-                                description: 'Pickup from Customer Depot'
-                            },
-                            {
-                                date: '2024-03-15',
-                                status: 'In-Transit',
-                                description: '-'
-                            },
-                            {
-                                date: '2024-03-18',
-                                status: 'In-Transit',
-                                description: 'Rydalmere Depot'
-                            },
-                        ],
-                        eta: '2024-03-18',
-                        status: 'In Transit',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN123456789',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment picked up from sender',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: new Date().toISOString()
-                            }
-                            ,{
-                                type: 'Private',
-                                text: 'Carrier was late',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: new Date().toISOString()
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN987654321',
-                        carrier: 'SpeedyShip Solutions',
-                        dispatchDate: '2024-03-20',
-                        senderAddress: 'Melbourne, VIC, 3000',
-                        receiverAddress: 'Brisbane, QLD, 4000',
-                        trackingDetails: [
-                            {
-                                date: '2024-03-15',
-                                status: 'picked-up',
-                                description: 'Pickup from Customer Depot'
-                            },
-                            {
-                                date: '2024-03-15',
-                                status: 'In-Transit',
-                                description: '-'
-                            },
-                            {
-                                date: '2024-03-18',
-                                status: 'In-Transit',
-                                description: 'Rydalmere Depot'
-                            },
-                        ],
-                        eta: '2024-03-25',
-                        status: 'In-Transit',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN987654321',
-                        comments: [
-                            {
-                                type: 'Private',
-                                text: 'Weather conditions causing delay',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: new Date().toISOString()
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN223344556',
-                        carrier: 'UltraSpeed Couriers',
-                        dispatchDate: '2024-03-12',
-                        senderAddress: 'Melbourne, VIC, 3000',
-                        receiverAddress: 'Perth, WA, 6000',
-                        trackingDetails: [
-                            { date: '2024-03-12', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-13', status: 'In-Transit', description: 'Departed Melbourne Depot' },
-                            { date: '2024-03-15', status: 'In-Transit', description: 'Arrived at Perth Depot' },
-                            { date: '2024-03-20', status: 'Delayed', description: 'Delayed due to customs inspection' },
-                            { date: '2024-03-21', status: 'In-Transit', description: 'Cleared customs, awaiting dispatch' }
-                        ],
-                        eta: '2024-03-20',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN223344556',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment is delayed due to operational issues.',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: '2024-03-14T09:30:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'Shipment delayed due to customs clearance issues.',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: '2024-03-18T10:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'Shipment has been delayed but is cleared for further transport.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-19T12:45:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN445566778',
-                        carrier: 'QuickShip Worldwide',
-                        dispatchDate: '2024-03-14',
-                        senderAddress: 'Sydney, NSW, 2000',
-                        receiverAddress: 'Brisbane, QLD, 4000',
-                        trackingDetails: [
-                            { date: '2024-03-14', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-15', status: 'In-Transit', description: 'Departed Sydney Depot' },
-                            { date: '2024-03-16', status: 'Not yet on line haul', description: 'Pending dispatch' },
-                            { date: '2024-03-18', status: 'Delayed', description: 'Weather conditions causing delay' },
-                            { date: '2024-03-20', status: 'In-Transit', description: 'Shipment now on the way to Brisbane' }
-                        ],
-                        eta: '2024-03-18',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN445566778',
-                        comments: [
-                            {
-                                type: 'Private',
-                                text: 'Shipment is yet to be dispatched due to backlog.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-15T08:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'Delays due to weather conditions, shipment expected to arrive late.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-17T15:30:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN667788990',
-                        carrier: 'GlobalExpress Logistics',
-                        dispatchDate: '2024-03-18',
-                        senderAddress: 'Brisbane, QLD, 4000',
-                        receiverAddress: 'Melbourne, VIC, 3000',
-                        trackingDetails: [
-                            { date: '2024-03-18', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-19', status: 'In-Transit', description: 'Departed Brisbane Depot' },
-                            { date: '2024-03-22', status: 'Not yet on line haul', description: 'Still awaiting departure' },
-                            { date: '2024-03-23', status: 'Delayed', description: 'Delayed due to scheduling conflict' }
-                        ],
-                        eta: '2024-03-24',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN667788990',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment still not dispatched, expecting delay.',
-                                commentsby: 'Customer Service Person 3',
-                                timestamp: '2024-03-19T11:00:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'Carrier is facing delays due to truck scheduling conflicts.',
-                                commentsby: 'Customer Service Person 3',
-                                timestamp: '2024-03-21T16:30:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN889900112',
-                        carrier: 'SpeedTrack International',
-                        dispatchDate: '2024-03-21',
-                        senderAddress: 'Sydney, NSW, 2000',
-                        receiverAddress: 'Hobart, TAS, 7000',
-                        trackingDetails: [
-                            { date: '2024-03-21', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-22', status: 'Not yet on line haul', description: 'Shipment is pending for line haul' },
-                            { date: '2024-03-23', status: 'Delayed', description: 'Truck scheduling delayed by heavy traffic' }
-                        ],
-                        eta: '2024-03-25',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN889900112',
-                        comments: [
-                            {
-                                type: 'Private',
-                                text: 'Shipment has not been dispatched due to truck scheduling issues.',
-                                commentsby: 'Customer Service Person 4',
-                                timestamp: '2024-03-22T07:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'Delays caused by scheduling issues, shipment expected to depart soon.',
-                                commentsby: 'Customer Service Person 4',
-                                timestamp: '2024-03-22T14:30:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN112233444',
-                        carrier: 'AirShip Express',
-                        dispatchDate: '2024-03-22',
-                        senderAddress: 'Adelaide, SA, 5000',
-                        receiverAddress: 'Perth, WA, 6000',
-                        trackingDetails: [
-                            { date: '2024-03-25', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-26', status: 'Not yet on line haul', description: 'Pending line haul departure' },
-                            { date: '2024-03-28', status: 'Delayed', description: 'Line haul delayed due to mechanical issue' }
-                        ],
-                        eta: '2024-03-29',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN112233444',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment has been delayed due to scheduling conflicts.',
-                                commentsby: 'Customer Service Person 5',
-                                timestamp: '2024-03-20T10:00:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'Line haul vehicle faced a mechanical issue and is being repaired.',
-                                commentsby: 'Customer Service Person 5',
-                                timestamp: '2024-03-21T09:00:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN223344667',
-                        carrier: 'Prime Delivery',
-                        dispatchDate: '2024-03-22',
-                        senderAddress: 'Melbourne, VIC, 3000',
-                        receiverAddress: 'Sydney, NSW, 2000',
-                        trackingDetails: [
-                            { date: '2024-03-22', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-22', status: 'Not yet on line haul', description: 'Awaiting line haul departure' },
-                            { date: '2024-03-23', status: 'Delayed', description: 'Operational delays causing scheduling issues' }
-                        ],
-                        eta: '2024-03-25',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN223344667',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment still awaiting departure due to operational issues.',
-                                commentsby: 'Customer Service Person 6',
-                                timestamp: '2024-03-22T11:00:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'Carrier facing operational delays, shipment will be delayed.',
-                                commentsby: 'Customer Service Person 6',
-                                timestamp: '2024-03-22T12:00:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN445566999',
-                        carrier: 'QuickRide Logistics',
-                        dispatchDate: '2024-03-20',
-                        senderAddress: 'Brisbane, QLD, 4000',
-                        receiverAddress: 'Sydney, NSW, 2000',
-                        trackingDetails: [
-                            { date: '2024-03-20', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-21', status: 'In-Transit', description: 'Departed Brisbane Depot' },
-                            { date: '2024-03-22', status: 'Not yet on line haul', description: 'Awaiting line haul dispatch' }
-                        ],
-                        eta: '2024-03-23',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN445566999',
-                        comments: [
-                            {
-                                type: 'Private',
-                                text: 'Shipment has not been dispatched yet due to scheduling backlog.',
-                                commentsby: 'Customer Service Person 7',
-                                timestamp: '2024-03-21T13:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'Shipment is delayed, awaiting line haul departure.',
-                                commentsby: 'Customer Service Person 7',
-                                timestamp: '2024-03-21T14:00:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN556677889',
-                        carrier: 'RapidX Logistics',
-                        dispatchDate: '2024-03-14',
-                        senderAddress: 'Perth, WA, 6000',
-                        receiverAddress: 'Adelaide, SA, 5000',
-                        trackingDetails: [
-                            { date: '2024-03-14', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-15', status: 'In-Transit', description: 'Departed Perth Depot' },
-                            { date: '2024-03-17', status: 'Delayed', description: 'Weather delays causing backlog' },
-                            { date: '2024-03-19', status: 'Not yet on line haul', description: 'Pending line haul scheduling' },
-                            { date: '2024-03-21', status: 'Delayed', description: 'Truck breakdown causing delay' }
-                        ],
-                        eta: '2024-03-18',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN556677889',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment has been delayed due to adverse weather conditions.',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: '2024-03-16T08:00:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'Truck broke down en route, shipment is delayed further.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-19T11:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'Line haul scheduling has been affected by the truck breakdown.',
-                                commentsby: 'Customer Service Person 3',
-                                timestamp: '2024-03-21T10:30:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN778899001',
-                        carrier: 'MegaDeliveries',
-                        dispatchDate: '2024-03-17',
-                        senderAddress: 'Sydney, NSW, 2000',
-                        receiverAddress: 'Brisbane, QLD, 4000',
-                        trackingDetails: [
-                            { date: '2024-03-17', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-18', status: 'In-Transit', description: 'Departed Sydney Depot' },
-                            { date: '2024-03-20', status: 'Not yet on line haul', description: 'Waiting for truck dispatch' },
-                            { date: '2024-03-22', status: 'Delayed', description: 'Weather issues affecting line haul schedule' }
-                        ],
-                        eta: '2024-03-21',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN778899001',
-                        comments: [
-                            {
-                                type: 'Private',
-                                text: 'Shipment is delayed due to heavy weather conditions in the region.',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: '2024-03-18T09:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'We expect more delays due to ongoing weather disturbances.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-19T12:30:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'The truck dispatch has been rescheduled due to weather-related delays.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-21T08:00:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN991122334',
-                        carrier: 'ShipFast Couriers',
-                        dispatchDate: '2024-03-19',
-                        senderAddress: 'Melbourne, VIC, 3000',
-                        receiverAddress: 'Hobart, TAS, 7000',
-                        trackingDetails: [
-                            { date: '2024-03-19', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-20', status: 'In-Transit', description: 'Departed Melbourne Depot' },
-                            { date: '2024-03-21', status: 'Delayed', description: 'Line haul scheduling issue causing delays' },
-                            { date: '2024-03-22', status: 'Not yet on line haul', description: 'Awaiting line haul departure' }
-                        ],
-                        eta: '2024-03-21',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN991122334',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'The shipment is delayed due to line haul scheduling conflicts.',
-                                commentsby: 'Customer Service Person 3',
-                                timestamp: '2024-03-20T10:00:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'Carrier has informed us of further scheduling issues that will delay the shipment.',
-                                commentsby: 'Customer Service Person 3',
-                                timestamp: '2024-03-21T14:00:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN223344111',
-                        carrier: 'ParcelPro Express',
-                        dispatchDate: '2024-03-14',
-                        senderAddress: 'Sydney, NSW, 2000',
-                        receiverAddress: 'Adelaide, SA, 5000',
-                        trackingDetails: [
-                            { date: '2024-03-14', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-15', status: 'In-Transit', description: 'Departed Sydney Depot' },
-                            { date: '2024-03-16', status: 'Delayed', description: 'Mechanical breakdown affecting the line haul' },
-                            { date: '2024-03-18', status: 'Not yet on line haul', description: 'Awaiting dispatch due to backlog' }
-                        ],
-                        eta: '2024-03-22',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN223344111',
-                        comments: [
-                            {
-                                type: 'Public',
-                                text: 'Shipment has been delayed due to mechanical failure of the transport vehicle.',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: '2024-03-15T09:00:00Z'
-                            },
-                            {
-                                type: 'Private',
-                                text: 'We are awaiting a replacement vehicle to dispatch the shipment.',
-                                commentsby: 'Customer Service Person 1',
-                                timestamp: '2024-03-17T13:00:00Z'
-                            }
-                        ]
-                    },
-                    {
-                        connote: 'CN334455667',
-                        carrier: 'TransWorld Logistics',
-                        dispatchDate: '2024-03-18',
-                        senderAddress: 'Brisbane, QLD, 4000',
-                        receiverAddress: 'Sydney, NSW, 2000',
-                        trackingDetails: [
-                            { date: '2024-03-18', status: 'picked-up', description: 'Pickup from Customer Depot' },
-                            { date: '2024-03-19', status: 'Delayed', description: 'Line haul truck scheduling conflict' },
-                            { date: '2024-03-21', status: 'Not yet on line haul', description: 'Awaiting clearance' },
-                            { date: '2024-03-22', status: 'Delayed', description: 'Further delays due to scheduling backlog' }
-                        ],
-                        eta: '2024-03-25',
-                        status: 'Delayed',
-                        completed: 'N',
-                        trackingUrl: 'https://example.com/tracking/CN334455667',
-                        comments: [
-                            {
-                                type: 'Private',
-                                text: 'The shipment is still awaiting dispatch due to ongoing scheduling conflicts.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-19T14:00:00Z'
-                            },
-                            {
-                                type: 'Public',
-                                text: 'Carrier has informed us of additional delays due to operational backlog.',
-                                commentsby: 'Customer Service Person 2',
-                                timestamp: '2024-03-21T16:00:00Z'
-                            }
-                        ]
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    
-                ];
+    {
+        customer: 'Customer ABC',
+        connote: 'CN123456789',
+        carrier: 'FastTrack Logistics',
+        dispatchDate: '2024-03-15',
+        senderAddress: 'Melbourne, VIC, 3000',
+        receiverAddress: 'Sydney, NSW, 2000',
+        trackingDetails: [
+            {
+                date: '2024-03-15',
+                status: 'Picked-Up',
+                description: 'Pickup from Customer Depot'
+            },
+            {
+                date: '2024-03-15',
+                status: 'In-Transit',
+                description: 'In Transit to Sydney'
+            },
+            {
+                date: '2024-03-18',
+                status: 'In-Transit',
+                description: 'Arrived at Sydney Depot'
+            },
+        ],
+        eta: '2024-03-18',
+        status: 'In Transit',
+        completed: 'N',
+        isFlagged: false,
+        trackingUrl: 'https://example.com/tracking/CN123456789',
+        comments: [
+            {
+                type: 'Public',
+                text: 'Shipment picked-up from sender in Melbourne.',
+                commentsby: 'Customer Service Person 1',
+                timestamp: '2024-03-15T10:00:00Z'
+            },
+            {
+                type: 'Private',
+                text: 'Carrier was delayed in transit due to traffic.',
+                commentsby: 'Customer Service Person 1',
+                timestamp: '2024-03-17T14:30:00Z'
+            }
+        ]
+    },
+    {
+        customer: 'Customer ABC',
+        connote: 'CN987654321',
+        carrier: 'SpeedyShip Solutions',
+        dispatchDate: '2024-03-20',
+        senderAddress: 'Melbourne, VIC, 3000',
+        receiverAddress: 'Brisbane, QLD, 4000',
+        trackingDetails: [
+            {
+                date: '2024-03-15',
+                status: 'Picked-Up',
+                description: 'Pickup from Customer Depot'
+            },
+            {
+                date: '2024-03-15',
+                status: 'In-Transit',
+                description: 'In Transit to Brisbane'
+            },
+            {
+                date: '2024-03-18',
+                status: 'In-Transit',
+                description: 'Arrived at Brisbane Depot'
+            },
+        ],
+        eta: '2024-03-25',
+        status: 'In Transit',
+        completed: 'N',
+        isFlagged: false,
+        trackingUrl: 'https://example.com/tracking/CN987654321',
+        comments: [
+            {
+                type: 'Private',
+                text: 'Heavy rains causing some delays along the route.',
+                commentsby: 'Customer Service Person 1',
+                timestamp: '2024-03-21T09:00:00Z'
+            }
+        ]
+    },
+    {
+        customer: 'Customer BCD',
+        connote: 'CN223344556',
+        carrier: 'UltraSpeed Couriers',
+        dispatchDate: '2024-03-12',
+        senderAddress: 'Melbourne, VIC, 3000',
+        receiverAddress: 'Perth, WA, 6000',
+        trackingDetails: [
+            { date: '2024-03-12', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+            { date: '2024-03-13', status: 'In-Transit', description: 'Departed Melbourne Depot' },
+            { date: '2024-03-15', status: 'In-Transit', description: 'Arrived at Perth Depot' },
+            { date: '2024-03-20', status: 'Delayed', description: 'Delayed due to vehicle breakdown' },
+            { date: '2024-03-21', status: 'Out for Delivery', description: 'Shipment is out for Delivery' }
+        ],
+        eta: '2024-03-20',
+        status: 'Out For Delivery',
+        completed: 'N',
+        isFlagged: false,
+        trackingUrl: 'https://example.com/tracking/CN223344556',
+        comments: [
+            {
+                type: 'Public',
+                text: 'Shipment delayed due to vehicle breakdown on the road.',
+                commentsby: 'Customer Service Person 1',
+                timestamp: '2024-03-14T09:30:00Z'
+            },
+            {
+                type: 'Private',
+                text: 'Carrier is working on rerouting to minimize further delays.',
+                commentsby: 'Customer Service Person 1',
+                timestamp: '2024-03-17T15:00:00Z'
+            },
+            {
+                type: 'Public',
+                text: 'Shipment delayed but expected to arrive soon.',
+                commentsby: 'Customer Service Person 2',
+                timestamp: '2024-03-19T12:45:00Z'
+            },
+            {
+                type: 'Private',
+                text: 'Followed up with Carrier for Updates.',
+                commentsby: 'Customer Service Person 2',
+                timestamp: '2024-03-22T12:45:00Z'
+            }
+        ]
+    },
+    {
+        customer: 'Customer BCD',
+        connote: 'CN445566778',
+        carrier: 'QuickShip Worldwide',
+        dispatchDate: '2024-03-14',
+        senderAddress: 'Sydney, NSW, 2000',
+        receiverAddress: 'Brisbane, QLD, 4000',
+        trackingDetails: [
+            { date: '2024-03-14', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+            { date: '2024-03-15', status: 'In-Transit', description: 'Departed Sydney Depot' },
+            { date: '2024-03-16', status: 'Not yet on line haul', description: 'Pending dispatch' },
+            { date: '2024-03-18', status: 'Delayed', description: 'Delays due to road closure' },
+            { date: '2024-03-20', status: 'In-Transit', description: 'Shipment back on track to Brisbane' }
+        ],
+        eta: '2024-03-18',
+        status: 'In Transit',
+        completed: 'N',
+        isFlagged: true,
+        trackingUrl: 'https://example.com/tracking/CN445566778',
+        comments: [
+            {
+                type: 'Private',
+                text: 'Shipment delayed due to road closure in regional areas.',
+                commentsby: 'Customer Service Person 2',
+                timestamp: '2024-03-15T08:00:00Z'
+            },
+            {
+                type: 'Public',
+                text: 'Delays expected due to unexpected road closures.',
+                commentsby: 'Customer Service Person 2',
+                timestamp: '2024-03-17T15:30:00Z'
+            }
+        ]
+    },
+    {
+        customer: 'Customer EFG',
+        connote: 'CN667788990',
+        carrier: 'GlobalExpress Logistics',
+        dispatchDate: '2024-03-18',
+        senderAddress: 'Brisbane, QLD, 4000',
+        receiverAddress: 'Melbourne, VIC, 3000',
+        trackingDetails: [
+            { date: '2024-03-18', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
+        ],
+        eta: '2024-03-24',
+        status: 'Picked-Up',
+        completed: 'N',
+        isFlagged: false,
+        trackingUrl: 'https://example.com/tracking/CN667788990',
+        comments: [
+            {
+                type: 'Public',
+                text: 'Shipment still not dispatched, expecting delay.',
+                commentsby: 'Customer Service Person 3',
+                timestamp: '2024-03-19T11:00:00Z'
+            },
+            {
+                type: 'Private',
+                text: 'Carrier is facing delays due to truck scheduling conflicts.',
+                commentsby: 'Customer Service Person 3',
+                timestamp: '2024-03-21T16:30:00Z'
+            }
+        ]
+    }
+];
                 this.sortOrder = 'asc'; // Default sort order
                 this.sortColumn = 'connote'; // Default column to sort by
+                this.populateCustomerFilter();
             }
 
             renderShipments(filter = '') {
                 const tbody = document.getElementById('shipmentTableBody');
+                const startDate = document.getElementById('startDate').value ? new Date(document.getElementById('startDate').value) : null;
+
                 tbody.innerHTML = '';
 
                 // Filter the shipments based on the filter parameter
                 const filteredShipments = this.shipments.filter(shipment => {
+                    const dispatchDate = new Date(shipment.dispatchDate);
+                    const customerFilter = document.getElementById('customerFilter').value;
+
+                    if (filter === 'important') {
+                        return shipment.isFlagged;  // Only show flagged shipments
+                    }
+                    if (startDate && dispatchDate < startDate) {
+                        return false;  // If dispatchDate is before the selected startDate, exclude this shipment
+                    }
+
+                    if (customerFilter && shipment.customer !== customerFilter) {
+                        return false;
+                    }
+
                     if (filter === 'late') {
                         return this.calculateLateDays(shipment.eta) > 0; // Late shipments
                     }
                     if (filter === 'missedLinehaul') {
-                        return shipment.status === 'Delayed'; // Missed linehaul shipments
+                        const dispatchDate = new Date(shipment.dispatchDate);
+
+                        // Missed linehaul shipments: Check if status is 'Picked-Up' and if the difference is greater than 1 day
+                        return shipment.status === 'Picked-Up' && (todayDate - dispatchDate) > 1; 
                     }
+                    
                     return true; // No filter, show all
                 });
+
+                
 
                 filteredShipments.sort((a, b) => this.compareShipments(a, b));
 
@@ -740,7 +527,11 @@
                     const row = document.createElement('tr');
 
                     row.classList.add('hover:bg-gray-100', 'transition-colors');
+                    
+                    const importantClass = shipment.isFlagged ? 'bg-red-200' : '';  // Red background if flagged
+
                     row.innerHTML = `
+                        <td class="p-3 border-b">${shipment.customer}</td>
                         <td class="p-3 border-b">${shipment.connote}</td>
                         <td class="p-3 border-b">${shipment.carrier}</td>
                         <td class="p-3 border-b">${shipment.dispatchDate}</td>
@@ -751,11 +542,19 @@
                         <td class="p-3 border-b">${shipment.completed === 'Y' ? 'Yes' : 'No'}</td>
                         <td class="p-3 border-b">${lateDays > 0 ? lateDays : 'On time'}</td>
 
+                         <td class="p-3 border-b">
+                            <!-- Flag button to toggle the shipment as important -->
+                            <button onclick="shipmentTracker.toggleFlag('${shipment.connote}')" class="px-3 py-1 rounded ${shipment.isFlagged ? 'bg-red-500' : 'bg-green-500'} text-white hover:bg-opacity-80">
+                                ${shipment.isFlagged ? 'Unflag' : 'Flag'}
+                        </button>
+
                         <td class="p-3 border-b">
                             <button onclick="shipmentTracker.openShipmentModal('${shipment.connote}')" 
                                     class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                                 Details
                             </button>
+
+
                         </td>
                     `;
                     tbody.appendChild(row);
@@ -831,6 +630,7 @@
                 if (!shipment) return;
 
                 // Populate modal details
+                document.getElementById('detailCustomer').textContent = shipment.customer;
                 document.getElementById('detailConnote').textContent = shipment.connote;
                 document.getElementById('detailCarrier').textContent = shipment.carrier;
 		        document.getElementById('detailDispatchDate').textContent = shipment.dispatchDate;
@@ -948,6 +748,37 @@
                 document.getElementById('exportBtn').addEventListener('click', () => {
                     alert('Export to Excel functionality to be implemented');
                 });
+                document.getElementById('startDate').addEventListener('change', () => {
+                    this.renderShipments(); // Apply filter when start date changes
+                });
+
+                document.getElementById('customerFilter').addEventListener('change', () => {
+                    this.renderShipments(); // Apply filter when customer changes
+                });
+
+                document.getElementById('filterImportantBtn').addEventListener('click', () => {
+                    this.renderShipments('important'); // Only show flagged shipments
+                });
+
+
+            }
+
+            populateCustomerFilter() {
+                const customerFilter = document.getElementById('customerFilter');
+                
+                // Extract unique customers from the shipments (using shipment.customer)
+                const customers = [...new Set(this.shipments.map(shipment => shipment.customer))];
+                
+                // Clear existing options
+                customerFilter.innerHTML = '<option value="">Select Customer</option>';
+
+                // Populate the dropdown with customer names
+                customers.forEach(customer => {
+                    const option = document.createElement('option');
+                    option.value = customer;
+                    option.textContent = customer;
+                    customerFilter.appendChild(option);
+                });
             }
 
             renderTrackingDetails(connote) {
@@ -980,6 +811,21 @@
                     
                 }
             }
+
+            toggleFlag(connote) {
+                // Find the shipment by its connote (or unique identifier)
+                const shipment = this.shipments.find(s => s.connote === connote);
+
+                if (shipment) {
+                    // Toggle the flag status
+                    shipment.isFlagged = !shipment.isFlagged;
+
+                    // Re-render the shipments to reflect the change
+                    this.renderShipments();  
+                }
+            }
+
+            
 
             init() {
                 this.renderShipments();
