@@ -125,6 +125,9 @@
                             <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('connote')">
                                 Connote
                             </th>
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('connote')">
+                                Customer Reference
+                            </th>
                             <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('carrier')">
                                 Carrier
                             </th>
@@ -202,6 +205,12 @@
                         <label class="block font-semibold mb-2">Receiver Address</label>
                         <p id="detailReceiverAddress"></p>
                     </div>
+                    <div>
+                        <label class="block font-semibold mb-2">Special Instructions</label>
+                        <p id="detailSpecialInstruction"></p>
+                    </div>
+
+                    
                     
 
 
@@ -249,6 +258,7 @@
                                 <option>Lost</option>
                             </select>
                         </div>
+
                         <div>
                             <label class="block mb-2">Completed</label>
                             <select id="completedSelect" class="w-full border rounded p-2">
@@ -256,6 +266,44 @@
                                 <option value="Y">Yes</option>
                             </select>
                         </div>
+
+
+                        <div>
+                            <label class="block mb-2">Late Reason Code</label>
+                            <select id="lateReasonSelect" class="w-full border rounded p-2">
+                                <option value="" disabled selected>Select a reason</option>
+                                <option value="weather">Weather Delays</option>
+                                <option value="traffic">Traffic Delays</option>
+                                <option value="breakdown">Vehicle Breakdown</option>
+                                <option value="address">Address Issues</option>
+                                <option value="operational">Operational Delays</option>
+                                <option value="missedPickup">Missed Pickup</option>
+                                <option value="unforeseen">Unforeseen Circumstances</option>
+                                <option value="incorrectInfo">Incorrect Shipping Information</option>
+                                <option value="routeChange">Route Change</option>
+                                <option value="processingDelays">Delays in Processing</option>
+                                <option value="driverShortage">Driver Shortage</option>
+                                <option value="publicHoliday">Public Holiday</option>
+                                <option value="heldInDepot">Held In Depot</option>
+                                <option value="misdirected">Misdirected</option>
+                                <option value="damaged">Damaged</option>
+                                <option value="oversizedFreight">Oversized Freight</option>
+                                <option value="naturalHazards">Natural Hazards – Flood/Fire/Weather etc.</option>
+                                <option value="nonNaturalHazards">Non-Natural Hazards – Truck Breaks Down/Truck Fire etc.</option>
+                                <option value="timeslotDelivery">Timeslot Delivery</option>
+                                <option value="scheduledDelivery">Scheduled/Booked in Delivery</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block mb-2">Reason Status</label>
+                            <div id="reasonStatus" class="w-full border rounded p-2">
+                                <!-- The status will be displayed here automatically -->
+                            </div>
+                        </div>
+                        
+
+
                     </div>
                 </div>
 
@@ -299,6 +347,7 @@
         document.getElementById("currentDate").textContent = formattedDate;
         todayDate.setHours(0, 0, 0, 0);
 
+
         class ShipmentTracker {
             constructor() {
                 this.shipments = 
@@ -306,10 +355,12 @@
                     {
                         customer: 'Customer ABC',
                         connote: 'CN123456789',
+                        customerReference: 'ABC231213123',
                         carrier: 'FastTrack Logistics',
                         dispatchDate: '2024-03-15',
                         senderAddress: 'Melbourne, VIC, 3000',
                         receiverAddress: 'Sydney, NSW, 2000',
+                        specialInstruction: 'Deliver to Warehouse',
                         trackingDetails: [
                             {
                                 date: '2024-03-15',
@@ -350,10 +401,12 @@
                     {
                         customer: 'Customer ABC',
                         connote: 'CN987654321',
+                        customerReference: 'ABC231233123',
                         carrier: 'SpeedyShip Solutions',
                         dispatchDate: '2024-03-20',
                         senderAddress: 'Melbourne, VIC, 3000',
                         receiverAddress: 'Brisbane, QLD, 4000',
+                        specialInstruction: 'Deliver after 5 PM only, as no one will be home before then',
                         trackingDetails: [
                             {
                                 date: '2024-03-15',
@@ -388,10 +441,12 @@
                     {
                         customer: 'Customer BCD',
                         connote: 'CN223344556',
+                        customerReference: 'BCD231233123',
                         carrier: 'UltraSpeed Couriers',
                         dispatchDate: '2024-03-12',
                         senderAddress: 'Melbourne, VIC, 3000',
                         receiverAddress: 'Perth, WA, 6000',
+                        specialInstruction: 'Package must be placed out of sight from the street, behind the large bush',
                         trackingDetails: [
                             { date: '2024-03-12', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-13', status: 'In-Transit', description: 'Departed Melbourne Depot' },
@@ -434,10 +489,12 @@
                     {
                         customer: 'Customer BCD',
                         connote: 'CN445566778',
+                        customerReference: 'BCD2312334',
                         carrier: 'QuickShip Worldwide',
                         dispatchDate: '2024-03-14',
                         senderAddress: 'Sydney, NSW, 2000',
                         receiverAddress: 'Brisbane, QLD, 4000',
+                        specialInstruction: 'PackDeliver between 12 PM and 2 PM only, as it’s during lunch break',
                         trackingDetails: [
                             { date: '2024-03-14', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-15', status: 'In-Transit', description: 'Departed Sydney Depot' },
@@ -468,10 +525,12 @@
                     {
                         customer: 'Customer EFG',
                         connote: 'CN667788990',
+                        customerReference: 'EFG21334',
                         carrier: 'GlobalExpress Logistics',
                         dispatchDate: '2024-03-18',
                         senderAddress: 'Brisbane, QLD, 4000',
                         receiverAddress: 'Melbourne, VIC, 3000',
+                        specialInstruction: 'For security reasons, do not ring the bell; just leave the package at the back door',
                         trackingDetails: [
                             { date: '2024-03-18', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                         ],
@@ -497,11 +556,13 @@
                     },
                     {
                         customer: 'Customer JKL',
+                        customerReference: 'JKL31234',
                         connote: 'CN123789456',
                         carrier: 'SpeedyTransport',
                         dispatchDate: '2024-03-25',
                         senderAddress: 'Perth, WA, 6000',
                         receiverAddress: 'Melbourne, VIC, 3000',
+                        specialInstruction: 'Please avoid ringing the bell; leave the package by the gate and notify by text',
                         trackingDetails: [
                             { date: '2024-03-25', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-26', status: 'In-Transit', description: 'In Transit to Melbourne' },
@@ -518,11 +579,13 @@
                     },
                     {
                         customer: 'Customer MNO',
+                        customerReference: 'MNO31234',
                         connote: 'CN456123789',
                         carrier: 'QuickShip Express',
                         dispatchDate: '2024-03-26',
                         senderAddress: 'Adelaide, SA, 5000',
                         receiverAddress: 'Sydney, NSW, 2000',
+                        specialInstruction: 'ATL',
                         trackingDetails: [
                             { date: '2024-03-26', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-27', status: 'In-Transit', description: 'In Transit to Sydney' },
@@ -537,10 +600,12 @@
                     {
                         customer: 'Customer PQR',
                         connote: 'CN789456123',
+                        customerReference: 'PQR223445',
                         carrier: 'FastLogistics Worldwide',
                         dispatchDate: '2024-03-28',
                         senderAddress: 'Brisbane, QLD, 4000',
                         receiverAddress: 'Canberra, ACT, 2600',
+                        specialInstruction: 'ATL',
                         trackingDetails: [
                             { date: '2024-03-28', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-29', status: 'In-Transit', description: 'In Transit to Canberra' },
@@ -557,10 +622,12 @@
                     {
                         customer: 'Customer STU',
                         connote: 'CN951357246',
+                        customerReference: 'STU235123',
                         carrier: 'SpeedShip Logistics',
                         dispatchDate: '2024-03-30',
                         senderAddress: 'Sydney, NSW, 2000',
                         receiverAddress: 'Hobart, TAS, 7000',
+                        specialInstruction: 'ATL',
                         trackingDetails: [
                             { date: '2024-03-30', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-31', status: 'In-Transit', description: 'In Transit to Hobart' },
@@ -575,10 +642,12 @@
                     {
                         customer: 'Customer VWX',
                         connote: 'CN234678901',
+                        customerReference: 'VWX12345',
                         carrier: 'BlueSky Couriers',
                         dispatchDate: '2024-03-20',
                         senderAddress: 'Melbourne, VIC, 3000',
                         receiverAddress: 'Brisbane, QLD, 4000',
+                        specialInstruction: 'ATL',
                         trackingDetails: [
                             { date: '2024-03-20', status: 'Picked-Up', description: 'Pickup from Customer Depot' },
                             { date: '2024-03-21', status: 'In-Transit', description: 'In Transit to Brisbane' },
@@ -594,11 +663,38 @@
                         ]
                     }
 
+                    
+
                 ];
+
+                this.lateReasonMapping = {
+                    '' : '',
+                    'weather': 'Acceptable',
+                    'traffic': 'Unacceptable',
+                    'breakdown': 'Unacceptable',
+                    'address': 'Unacceptable',
+                    'operational': 'Unacceptable',
+                    'missedPickup': 'Unacceptable',
+                    'unforeseen': 'Unacceptable',
+                    'incorrectInfo': 'Unacceptable',
+                    'routeChange': 'Unacceptable',
+                    'processingDelays': 'Unacceptable',
+                    'driverShortage': 'Unacceptable',
+                    'publicHoliday': 'Unacceptable',
+                    'heldInDepot': 'Unacceptable',
+                    'misdirected': 'Unacceptable',
+                    'damaged': 'Unacceptable',
+                    'oversizedFreight': 'Unacceptable',
+                    'naturalHazards': 'Acceptable',
+                    'nonNaturalHazards': 'Unacceptable',
+                    'timeslotDelivery': 'Acceptable',
+                    'scheduledDelivery': 'Acceptable'
+                };  
 
             this.sortOrder = 'asc'; // Default sort order
             this.sortColumn = 'connote'; // Default column to sort by
             this.populateCustomerFilter();
+            this.init();
             }
 
             renderShipments(filter = '') {
@@ -652,6 +748,7 @@
                     row.innerHTML = `
                         <td class="p-3 border-b">${shipment.customer}</td>
                         <td class="p-3 border-b">${shipment.connote}</td>
+                        <td class="p-3 border-b">${shipment.customerReference}</td>
                         <td class="p-3 border-b">${shipment.carrier}</td>
                         <td class="p-3 border-b">${shipment.dispatchDate}</td>
                         <td class="p-3 border-b">${shipment.eta}</td>
@@ -756,6 +853,7 @@
                 document.getElementById('detailETADate').textContent = shipment.eta;
                 document.getElementById('detailSenderAddress').textContent = shipment.senderAddress;
                 document.getElementById('detailReceiverAddress').textContent = shipment.receiverAddress;
+                document.getElementById('detailSpecialInstruction').textContent = shipment.specialInstruction;
                                
                 const trackingUrl = shipment.trackingUrl; 
 
@@ -796,6 +894,9 @@
                 document.getElementById('shipmentModal').classList.remove('hidden');
                 document.getElementById('shipmentModal').classList.add('flex');
             }
+
+
+
 
             addComment(connote) {
                 const commentType = document.getElementById('commentType').value;
@@ -945,12 +1046,43 @@
             }
 
             
+            
 
             init() {
                 this.renderShipments();
                 this.setupEventListeners();
+                // Set up event listener for the late reason select dropdown
+                document.getElementById('lateReasonSelect').addEventListener('change', () => {
+                    this.updateReasonStatus();
+                });
+
+                // Show initial status on page load
+                this.updateReasonStatus();
+
             }
+
+                // Update the reason status based on the selected reason
+            updateReasonStatus() {
+                const selectedReason = document.getElementById('lateReasonSelect').value;
+                const status = this.lateReasonMapping[selectedReason];
+                document.getElementById('reasonStatus').innerHTML = `<strong class="${status.toLowerCase()}">${status}</strong>`;
+                
+                
+            }
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
 
         // Initialize the application
         const shipmentTracker = new ShipmentTracker();
