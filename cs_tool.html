@@ -119,37 +119,40 @@
                 <table class="w-full" id="shipmentTable">
                     <thead class="bg-blue-50">
                         <tr>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('customer')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('customer')">
                                 Customer
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('connote')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('connote')">
                                 Connote
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('connote')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('connote')">
                                 Customer Reference
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('carrier')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('carrier')">
                                 Carrier
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('dispatchDate')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('dispatchDate')">
                                 Dispatch Date
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('eta')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('eta')">
                                 ETA
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('status')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('deliveryDate')">
+                                Delivery Date
+                            </th>
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('status')">
                                 Status
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('completed')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('completed')">
                                 Completed
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer" onclick="shipmentTracker.sortTable('lateDays')">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b cursor-pointer text-sm" onclick="shipmentTracker.sortTable('lateDays')">
                                 Late Days
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b text-sm">
                                 Important
                             </th>
-                            <th class="p-3 text-center font-semibold text-gray-700 border-b">
+                            <th class="p-3 text-center font-semibold text-gray-700 border-b text-sm">
                                 More Information
                             </th>
                         </tr>
@@ -192,6 +195,10 @@
                     <div>
                         <label class="block font-semibold mb-2">Dispatch Date</label>
                         <p id="detailDispatchDate"></p>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-2">Delivery Date</label>
+                        <p id="detailDeliveryDate"></p>
                     </div>
                     <div>
                         <label class="block font-semibold mb-2">ETA Date</label>
@@ -377,10 +384,16 @@
                                 status: 'In-Transit',
                                 description: 'Arrived at Sydney Depot'
                             },
+                            {
+                                date: '2024-03-20',
+                                status: 'Delivered',
+                                description: 'Delivered at Customer'
+                            },
                         ],
                         eta: '2024-03-18',
-                        status: 'In Transit',
-                        completed: 'N',
+                        deliveryDate: '2024-03-20',
+                        status: 'Delivered',
+                        completed: 'Y',
                         isFlagged: false,
                         trackingUrl: 'https://example.com/tracking/CN123456789',
                         comments: [
@@ -720,7 +733,8 @@
                     }
 
                     if (filter === 'late') {
-                        return this.calculateLateDays(shipment.eta) > 0; // Late shipments
+                        const shipmentDate = shipment.deliveryDate || shipment.eta; // Use deliveryDate if it's not null, otherwise use eta
+                        return this.calculateLateDays(shipmentDate) > 0; // Late shipments
                     }
                     if (filter === 'missedLinehaul') {
                         const dispatchDate = new Date(shipment.dispatchDate);
@@ -737,7 +751,7 @@
                 filteredShipments.sort((a, b) => this.compareShipments(a, b));
 
                 filteredShipments.forEach(shipment => {
-                    const lateDays = this.calculateLateDays(shipment.eta);
+                    const lateDays = this.calculateLateDays(shipment.deliveryDate || shipment.eta);
 
                     const row = document.createElement('tr');
 
@@ -746,25 +760,26 @@
                     const importantClass = shipment.isFlagged ? 'bg-red-200' : '';  // Red background if flagged
 
                     row.innerHTML = `
-                        <td class="p-3 border-b">${shipment.customer}</td>
-                        <td class="p-3 border-b">${shipment.connote}</td>
-                        <td class="p-3 border-b">${shipment.customerReference}</td>
-                        <td class="p-3 border-b">${shipment.carrier}</td>
-                        <td class="p-3 border-b">${shipment.dispatchDate}</td>
-                        <td class="p-3 border-b">${shipment.eta}</td>
-                        <td class="p-3 border-b status-icon">
+                        <td class="p-3 border-b text-sm">${shipment.customer}</td>
+                        <td class="p-3 border-b text-sm">${shipment.connote}</td>
+                        <td class="p-3 border-b text-sm">${shipment.customerReference}</td>
+                        <td class="p-3 border-b text-sm">${shipment.carrier}</td>
+                        <td class="p-3 border-b text-sm text-sm">${shipment.dispatchDate}</td>
+                        <td class="p-3 border-b text-sm">${shipment.eta}</td>
+                        <td class="p-3 border-b text-sm">${shipment.deliveryDate}</td>
+                        <td class="p-3 border-b status-icon text-sm">
                             <span class="status-text ${this.getStatusColor(shipment.status)}">${shipment.status}</span>
                         </td>
-                        <td class="p-3 border-b">${shipment.completed === 'Y' ? 'Yes' : 'No'}</td>
-                        <td class="p-3 border-b">${lateDays > 0 ? lateDays : 'On time'}</td>
+                        <td class="p-3 border-b text-sm">${shipment.completed === 'Y' ? 'Yes' : 'No'}</td>
+                        <td class="p-3 border-b text-sm">${lateDays > 0 ? lateDays : 'On time'}</td>
 
-                         <td class="p-3 border-b">
+                         <td class="p-3 border-b text-sm">
                             <!-- Flag button to toggle the shipment as important -->
                             <button onclick="shipmentTracker.toggleFlag('${shipment.connote}')" class="px-3 py-1 rounded ${shipment.isFlagged ? 'bg-red-500' : 'bg-green-500'} text-white hover:bg-opacity-80">
                                 ${shipment.isFlagged ? 'TRUE' : 'FALSE'}
                         </button>
 
-                        <td class="p-3 border-b">
+                        <td class="p-3 border-b text-sm">
                             <button onclick="shipmentTracker.openShipmentModal('${shipment.connote}')" 
                                     class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                                 Details
@@ -806,7 +821,8 @@
                     case 'completed':
                         return shipment.completed === 'Y' ? 1 : 0;
                     case 'lateDays':
-                        return this.calculateLateDays(shipment.eta);
+                        const lateDays = this.calculateLateDays(shipment.deliveryDate || shipment.eta);
+                        return lateDays;
                     default:
                         return shipment.connote;
                 }
@@ -851,6 +867,7 @@
                 document.getElementById('detailCarrier').textContent = shipment.carrier;
 		        document.getElementById('detailDispatchDate').textContent = shipment.dispatchDate;
                 document.getElementById('detailETADate').textContent = shipment.eta;
+                document.getElementById('detailDeliveryDate').textContent = shipment.deliveryDate;
                 document.getElementById('detailSenderAddress').textContent = shipment.senderAddress;
                 document.getElementById('detailReceiverAddress').textContent = shipment.receiverAddress;
                 document.getElementById('detailSpecialInstruction').textContent = shipment.specialInstruction;
