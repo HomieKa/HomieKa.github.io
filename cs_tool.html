@@ -100,7 +100,7 @@
                 Today's Date:
                 <span id="currentDate" class="font-normal text-gray-600 mb-4 pr-8"></span>
 
-                Dispatch Date:
+                ETA Date:
                 <input type="date" id="startDate" class="px-3 py-1 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-normal" />
                 
                 Customer:
@@ -705,14 +705,14 @@
 
                 // Filter the shipments based on the filter parameter
                 const filteredShipments = this.shipments.filter(shipment => {
-                    const dispatchDate = new Date(shipment.dispatchDate);
+                    const etaDate = new Date(shipment.eta);
                     const customerFilter = document.getElementById('customerFilter').value;
 
                     if (filter === 'important') {
                         return shipment.isFlagged;  // Only show flagged shipments
                     }
-                    if (startDate && dispatchDate < startDate) {
-                        return false;  // If dispatchDate is before the selected startDate, exclude this shipment
+                    if (startDate && etaDate > startDate) {
+                        return false;  // If etaDate is before the selected startDate, exclude this shipment
                     }
 
                     if (customerFilter && shipment.customer !== customerFilter) {
